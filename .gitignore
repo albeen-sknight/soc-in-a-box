@@ -5,6 +5,9 @@
 splunk/addons/*.tgz
 splunk/addons/*.tar.gz
 
+# The Splunk Universal Forwarder installer, downloaded from splunk.com
+*.msi
+
 # Changes Splunk saves when I click around in the web interface
 splunk/apps/*/local/
 splunk/apps/*/metadata/local.meta

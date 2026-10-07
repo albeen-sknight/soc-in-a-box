@@ -1,4 +1,4 @@
-# Agents: Sysmon
+# Agents: Sysmon and the forwarder
 
 Windows keeps a diary of what happens on each machine, but it writes very little by default. It's like a shop camera that only films the front door. Sysmon is a free Microsoft tool that adds cameras everywhere else: which program started which, with what command line, what it connected to, and whether anything touched LSASS, the part of Windows that keeps passwords in memory.
 
@@ -34,3 +34,22 @@ powershell -ExecutionPolicy Bypass -File E:\lab\Install-Sysmon.ps1
 The script refuses to run if the config has been changed or if `Sysmon64.exe` isn't signed by Microsoft.
 
 To check it's logging: open Event Viewer, then **Applications and Services Logs → Microsoft → Windows → Sysmon → Operational**.
+
+## The forwarder
+
+Sysmon and Windows write their logs on each machine, but the SOC lives outside the lab. The Splunk Universal Forwarder is the courier: it reads the logs and carries them to Splunk at `10.10.10.1:9997`, the PC's address on the lab network.
+
+| Log | Splunk index | Why I want it |
+| --- | --- | --- |
+| Security | `wineventlog` | Logons, account and group changes, new processes, scheduled tasks, log cleared |
+| System and Application | `wineventlog` | Services, drivers and errors, for context |
+| PowerShell Operational | `wineventlog` | The text of every script that runs (4104) |
+| Sysmon Operational | `sysmon` | Process trees, network connections, LSASS access, sent as XML for the Sysmon add-on |
+
+The settings live in my own small app, `forwarder/limonada_forwarder`: `inputs.conf` says what to read, `outputs.conf` says where to send it.
+
+The installer itself (`splunkforwarder-*-x64.msi`) comes from splunk.com with my account, so it's not in Git. I put it in this folder before building the lab tools ISO.
+
+The forwarder runs as Local System so it can read the Security and Sysmon logs. Its own admin account gets a random password, because nobody ever logs into it.
+
+I left TLS off between the forwarders and Splunk. The logs never leave the PC: they go from VMware's virtual network straight into Docker, so there's no home network for anyone to listen on.
