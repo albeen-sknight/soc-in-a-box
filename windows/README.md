@@ -6,11 +6,14 @@ The front desk is **DC01**, the domain controller. Every login in the company ge
 
 ## The lab network
 
-All the company machines live on a private network inside my PC that nobody outside can reach. They get out through the PC (NAT) for updates and to send their logs to the laptop.
+All the company machines live on a private network inside my PC that nobody outside can reach. They get out through VMware's NAT for updates and to send their logs to the laptop. It works like a building's reception desk: everyone inside can call out, but nobody outside can dial an office directly.
+
+The lab runs on VMware Workstation Pro, on its NAT network (VMnet8), which I set to `10.10.10.0/24` in the Virtual Network Editor.
 
 | Machine | Address | What it does |
 | --- | --- | --- |
-| The PC itself | 10.10.10.1 | The gateway out of the lab |
+| The PC itself | 10.10.10.1 | The PC's own address on the lab network |
+| VMware NAT | 10.10.10.2 | The gateway out of the lab |
 | DC01 | 10.10.10.10 | Domain controller and DNS for `limonada.local` |
 | WS01 | 10.10.10.21 | Lucia Navarro's PC, in Finance |
 | WS02 | 10.10.10.22 | Carmen Vidal's PC, in Sales |
@@ -22,6 +25,7 @@ All the company machines live on a private network inside my PC that nobody outs
 | `unattend/` | The answer file template and the script that turns it into an "answer ISO" for each VM |
 | `dc01/` | The three scripts that build the domain, plus the list of the 40 fictional staff |
 | `workstations/` | The script that joins WS01 and WS02 to the domain |
+| `agents/` | Sysmon and its config, installed on every Windows machine |
 
 ## The order
 
@@ -36,16 +40,18 @@ All the company machines live on a private network inside my PC that nobody outs
 4. `01-Promote-DC01.ps1` sets the fixed address and creates the domain. DC01 reboots.
 5. Log in as `LIMONADA\Administrator` and run `02-Build-Limonada.ps1`. It creates the departments, the groups, the staff and the IT admin account.
 6. Run `03-New-SecurityLoggingGpo.ps1`. It turns on the logging the detections need, for every machine in the domain.
+7. Run `Install-Sysmon.ps1`. It adds Sysmon's detailed logging on top.
 
 **On WS01 and WS02**, logged in as `labadmin`:
 
-7. Run `Join-Limonada.ps1`. It sets the fixed address and joins the domain. The machine reboots.
-8. Check the logging reached it: `gpupdate /force`, then `auditpol /get /category:*`.
+8. Run `Join-Limonada.ps1`. It sets the fixed address and joins the domain. The machine reboots.
+9. Log in as `.\labadmin` (the dot means "this computer", not the domain) and run `Install-Sysmon.ps1`.
+10. Check the logging reached it: `gpupdate /force`, then `auditpol /get /category:*`.
 
 **Back on the PC**
 
-9. Snapshot all three VMs. This is the clean company I roll back to before every attack day.
-10. Delete `windows\unattend\build`. It holds the admin password in plain text.
+11. Snapshot all three VMs. This is the clean company I roll back to before every attack day.
+12. Delete `windows\unattend\build`. It holds the admin password in plain text.
 
 To run a script from the ANSWER drive (say it's `E:`), open PowerShell as administrator and type:
 

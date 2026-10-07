@@ -17,3 +17,7 @@
 *.tgz binary
 *.png binary
 *.jpg binary
+
+# Third party files stay byte for byte as downloaded, so their checksums still match
+windows/agents/sysmonconfig.xml -text
+windows/agents/sysmon-modular-LICENSE.md -text

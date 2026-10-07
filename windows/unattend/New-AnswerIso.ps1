@@ -73,6 +73,8 @@ New-Item -ItemType Directory -Path (Join-Path $stage 'lab') -Force | Out-Null
 $utf8NoBom = New-Object System.Text.UTF8Encoding $false
 [System.IO.File]::WriteAllText((Join-Path $stage 'autounattend.xml'), $filled, $utf8NoBom)
 Copy-Item (Join-Path $scriptFolder '*') (Join-Path $stage 'lab') -Recurse
+# Every machine also gets the agents (Sysmon now, the forwarder later)
+Copy-Item (Join-Path $PSScriptRoot '..\agents\*') (Join-Path $stage 'lab') -Recurse
 
 # Pack the folder into an ISO with the ISO maker that's built into Windows (IMAPI2)
 if (-not ('IsoWriter' -as [type])) {
