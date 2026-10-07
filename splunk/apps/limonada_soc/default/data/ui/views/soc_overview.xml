@@ -1,0 +1,155 @@
+<form version="1.1" theme="dark" refresh="60">
+  <label>Limonada S.L. SOC wall screen</label>
+  <description>What normal looks like, and what just changed. Refreshes every minute.</description>
+
+  <fieldset submitButton="false">
+    <input type="time" token="range">
+      <label>Time range</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+
+  <!-- Row 1: the four numbers I look at first -->
+  <row>
+    <panel>
+      <title>Failed logons</title>
+      <single>
+        <search>
+          <query>index=wineventlog EventCode=4625 | stats count</query>
+          <earliest>$range.earliest$</earliest>
+          <latest>$range.latest$</latest>
+        </search>
+        <option name="rangeColors">["0x53a051","0xf8be34","0xdc4e41"]</option>
+        <option name="rangeValues">[10,50]</option>
+        <option name="useColors">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Admin group changes</title>
+      <single>
+        <search>
+          <query>index=wineventlog EventCode IN (4728, 4732, 4756) | stats count</query>
+          <earliest>$range.earliest$</earliest>
+          <latest>$range.latest$</latest>
+        </search>
+        <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="useColors">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>WAF blocks</title>
+      <single>
+        <search>
+          <query>index=waf status=403 | stats count</query>
+          <earliest>$range.earliest$</earliest>
+          <latest>$range.latest$</latest>
+        </search>
+        <option name="rangeColors">["0x53a051","0xf8be34","0xdc4e41"]</option>
+        <option name="rangeValues">[5,25]</option>
+        <option name="useColors">1</option>
+      </single>
+    </panel>
+    <panel>
+      <title>Alerts fired</title>
+      <single>
+        <search>
+          <query>| rest /services/alerts/fired_alerts splunk_server=local | where title!="-" | stats sum(triggered_alert_count) as alerts | fillnull value=0 alerts</query>
+        </search>
+        <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
+        <option name="rangeValues">[0]</option>
+        <option name="useColors">1</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- Row 2: is every source still talking? A flat line means a forwarder went quiet. -->
+  <row>
+    <panel>
+      <title>Events per source</title>
+      <chart>
+        <search>
+          <query>index IN (wineventlog, sysmon, waf) | timechart span=15m count by index</query>
+          <earliest>$range.earliest$</earliest>
+          <latest>$range.latest$</latest>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.legend.placement">bottom</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- Row 3: password guessing and web attacks over time -->
+  <row>
+    <panel>
+      <title>Failed logons by machine</title>
+      <chart>
+        <search>
+          <query>index=wineventlog EventCode=4625 | timechart span=15m count by host</query>
+          <earliest>$range.earliest$</earliest>
+          <latest>$range.latest$</latest>
+        </search>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.legend.placement">bottom</option>
+      </chart>
+    </panel>
+    <panel>
+      <title>WAF blocks over time</title>
+      <chart>
+        <search>
+          <query>index=waf | eval result=if(status=403, "blocked", "allowed") | timechart span=15m count by result</query>
+          <earliest>$range.earliest$</earliest>
+          <latest>$range.latest$</latest>
+        </search>
+        <option name="charting.chart">column</option>
+        <option name="charting.chart.stackMode">stacked</option>
+        <option name="charting.legend.placement">bottom</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- Row 4: the changes that should almost never happen -->
+  <row>
+    <panel>
+      <title>Someone added to an admin group</title>
+      <table>
+        <search>
+          <query>index=wineventlog EventCode IN (4728, 4732, 4756) | table _time host EventCode src_user user Group_Name | sort - _time</query>
+          <earliest>$range.earliest$</earliest>
+          <latest>$range.latest$</latest>
+        </search>
+        <option name="count">10</option>
+      </table>
+    </panel>
+    <panel>
+      <title>Rarest programs started</title>
+      <table>
+        <search>
+          <query>index=wineventlog EventCode=4688 | eval program=coalesce(process_name, New_Process_Name) | rare limit=10 program</query>
+          <earliest>$range.earliest$</earliest>
+          <latest>$range.latest$</latest>
+        </search>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- Row 5: who is knocking on the web shop's door -->
+  <row>
+    <panel>
+      <title>Top blocked sources and pages</title>
+      <table>
+        <search>
+          <query>index=waf status=403 | stats count AS blocks, latest(_time) AS last_seen BY src_ip uri_path | sort - blocks | head 10 | eval last_seen=strftime(last_seen, "%d %b %H:%M")</query>
+          <earliest>$range.earliest$</earliest>
+          <latest>$range.latest$</latest>
+        </search>
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+</form>

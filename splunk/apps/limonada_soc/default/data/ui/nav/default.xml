@@ -1,0 +1,5 @@
+<nav search_view="search" color="#F2C14E">
+  <view name="soc_overview" default="true" />
+  <view name="search" />
+  <a href="/app/limonada_soc/alerts">Alerts</a>
+</nav>
