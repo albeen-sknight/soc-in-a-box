@@ -1,4 +1,5 @@
-# SOC in a Box: the SOC side. This file runs on the laptop.
+# SOC in a Box: the SOC side. It runs in Docker on the PC, outside the lab network,
+# the way a managed SOC sits outside its client's office.
 # Phase 1 starts Splunk only. Wazuh and the alert relay join in later phases.
 # Start it with:  docker compose up -d
 
@@ -21,13 +22,13 @@ services:
       # The Windows and Sysmon add-ons, installed on first start (see splunk/addons/README.md)
       SPLUNK_APPS_URL: /tmp/addons/windows-ta.tgz,/tmp/addons/sysmon-ta.tgz
     ports:
-      # Splunk Web, opened to the tablet later by the laptop's firewall
-      - "8000:8000"
+      # Splunk Web, on this PC only for now. Phase 4 opens it to the tablet.
+      - "127.0.0.1:8000:8000"
       # HTTP Event Collector (HEC): WEB01 sends the WAF and Linux logs here
       - "8088:8088"
-      # Receiving port for the Universal Forwarders on DC01, WS01 and WS02
+      # The Universal Forwarders on DC01, WS01 and WS02 send here, through 10.10.10.1
       - "9997:9997"
-      # Management API, reachable from the laptop itself only (the tests use it)
+      # Management API, reachable from this PC only (the tests use it)
       - "127.0.0.1:8089:8089"
     volumes:
       # Indexed data and settings survive a container restart or rebuild

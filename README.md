@@ -1,14 +1,14 @@
 # SOC in a Box
 
-I built a tiny company on my PC, put a security operations center on my laptop, and then broke into my own company to see if I'd catch myself.
+I built a tiny company on my PC, put a security operations center next to it, and then broke into my own company to see if I'd catch myself.
 
-> **Status:** building. Phase 1 of 10, the SOC is coming up.
+> **Status:** building. The company is up; next, the SOC.
 
 ## What this is
 
 **In simple words:** picture a small office with a server that checks everyone's logins, a couple of staff laptops and a web shop. Every one of them sends a note to a camera room each time something happens. I sit in the camera room. Then I play the burglar, break in a few different ways, swap hats, and try to catch myself the way a SOC analyst would on a real shift.
 
-**In technical words:** a Windows Server domain controller, two Windows 11 workstations and a web server with a WAF run on my PC. Their Windows Security, Sysmon, PowerShell, Linux and ModSecurity logs travel across my home network to my laptop, where Splunk Enterprise and Wazuh run in Docker. I run MITRE ATT&CK techniques against the lab with Atomic Red Team, my SPL detections raise alerts that buzz my phone, and I work every alert into a written incident report.
+**In technical words:** a Windows Server domain controller, two Windows 11 workstations and a web server with a WAF run on my PC. Their Windows Security, Sysmon, PowerShell, Linux and ModSecurity logs leave the lab network and travel to Splunk Enterprise and Wazuh, which run in Docker on the same PC but outside the company's network. I run MITRE ATT&CK techniques against the lab with Atomic Red Team, my SPL detections raise alerts that buzz my phone, and I work every alert into a written incident report.
 
 ## About me
 
@@ -35,20 +35,20 @@ Limonada S.L. is a made up juice distributor with 40 staff. It's the same compan
 | WS01, WS02 | Windows 11 Enterprise staff workstations | PC |
 | WEB01 | The web shop behind the WAF from my last project | PC |
 | Attacker | The uninvited guest, aimed only at lab machines | PC |
-| The SOC | Splunk, Wazuh and the alert relay in Docker | Laptop |
+| The SOC | Splunk, Wazuh and the alert relay in Docker, outside the lab network | PC |
 | The pager | Alerts arrive as phone notifications | Phone |
 | The wall screen | The SOC dashboard, full screen | Tablet |
 
-The PC plays the company and the laptop plays the SOC. That's how a managed SOC works in real life too: it sits outside the client's network and the logs travel to it.
+The company lives on a private VMware network and the SOC lives outside it, in Docker. That's how a managed SOC works in real life too: it sits outside the client's network and the logs travel to it.
 
 ## The build, phase by phase
 
 | Phase | What happens | Status |
 | --- | --- | --- |
-| 0 | Groundwork: virtualization, Docker, the repo, the Windows ISOs | In progress |
-| 1 | The SOC comes up: Splunk on the laptop | In progress |
-| 2 | Build the company: the domain, the staff, Sysmon, the forwarders | Not started |
-| 3 | Onboard every log source | Not started |
+| 0 | Groundwork: virtualization, the repo, the Windows ISOs | Done |
+| 1 | The SOC comes up: Splunk in Docker | Done |
+| 2 | Build the company: the domain, the staff, the logging, Sysmon | Done |
+| 3 | Onboard every log source: the forwarders | Not started |
 | 4 | The SOC dashboard and the wall screen | Not started |
 | 5 | Ten detections and the pager | Not started |
 | 6 | The compressed week of attacks | Not started |
