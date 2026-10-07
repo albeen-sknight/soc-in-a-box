@@ -50,8 +50,8 @@ Get-NetRoute -InterfaceIndex $adapter.ifIndex -DestinationPrefix '0.0.0.0/0' -Er
     Remove-NetRoute -Confirm:$false
 New-NetIPAddress -InterfaceIndex $adapter.ifIndex -IPAddress $IPAddress -PrefixLength $PrefixLength -DefaultGateway $Gateway | Out-Null
 
-# Until DC01 runs its own DNS, use public DNS servers so it can reach the internet
-Set-DnsClientServerAddress -InterfaceIndex $adapter.ifIndex -ServerAddresses '1.1.1.1', '9.9.9.9'
+# Until DC01 runs its own DNS, use VMware's gateway, which passes lookups on to the PC's DNS
+Set-DnsClientServerAddress -InterfaceIndex $adapter.ifIndex -ServerAddresses $Gateway
 
 # Install the Active Directory role and its admin tools
 Write-Host 'Installing Active Directory Domain Services...'

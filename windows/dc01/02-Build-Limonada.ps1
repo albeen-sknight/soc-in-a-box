@@ -13,7 +13,8 @@
 #>
 param(
     [string]  $StaffCsv      = (Join-Path $PSScriptRoot 'staff.csv'),
-    [string[]]$DnsForwarders = @('1.1.1.1', '9.9.9.9')
+    # VMware's NAT gateway relays DNS to the PC. Public DNS like 1.1.1.1 gets blocked on my network.
+    [string[]]$DnsForwarders = @('10.10.10.2')
 )
 
 $ErrorActionPreference = 'Stop'
@@ -47,7 +48,7 @@ function New-OUIfMissing([string]$Name, [string]$Path) {
     return $dn
 }
 
-# 1. DNS: DC01 answers the lab's name lookups and asks public DNS for anything on the internet
+# 1. DNS: DC01 answers the lab's name lookups and passes anything on the internet to the gateway
 Write-Host 'Setting DNS forwarders...'
 Set-DnsServerForwarder -IPAddress $DnsForwarders
 

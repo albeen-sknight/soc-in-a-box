@@ -14,7 +14,7 @@ param(
     # Leave empty and the script picks the address from the lab plan below
     [string]$IPAddress    = '',
     [int]   $PrefixLength = 24,
-    [string]$Gateway      = '10.10.10.1',
+    [string]$Gateway      = '10.10.10.2',
     [string]$DcAddress    = '10.10.10.10',
     [string]$DomainName   = 'limonada.local'
 )
