@@ -13,7 +13,7 @@
 param(
     [string]$IPAddress    = '10.10.10.10',
     [int]   $PrefixLength = 24,
-    [string]$Gateway      = '10.10.10.1',
+    [string]$Gateway      = '10.10.10.2',
     [string]$DomainName   = 'limonada.local',
     [string]$NetbiosName  = 'LIMONADA'
 )
