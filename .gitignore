@@ -9,6 +9,9 @@ splunk/addons/*.tar.gz
 splunk/apps/*/local/
 splunk/apps/*/metadata/local.meta
 
+# Filled answer files and answer ISOs hold the VM admin password in plain text
+windows/unattend/build/
+
 # Windows install media and virtual machine disks are far too big for Git
 *.iso
 *.vhdx

@@ -1,0 +1,19 @@
+# Let Git pick the right line endings for each kind of file.
+# Splunk and Docker run on Linux, so their files keep Linux line endings.
+* text=auto
+*.conf text eol=lf
+*.meta text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.sh   text eol=lf
+
+# Windows files keep Windows line endings
+*.ps1 text eol=crlf
+*.xml text eol=crlf
+*.csv text eol=crlf
+
+# Never touch these
+*.iso binary
+*.tgz binary
+*.png binary
+*.jpg binary

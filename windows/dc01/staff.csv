@@ -1,0 +1,41 @@
+FirstName,LastName,Department,Title
+Marta,Ibanez,Management,Managing Director
+Javier,Molina,Management,Sales Director
+Elena,Castro,Management,Finance Director
+Lucia,Navarro,Finance,Accountant
+Pablo,Herrera,Finance,Accountant
+Sara,Delgado,Finance,Treasury Officer
+Diego,Ortega,Finance,Billing Clerk
+Nuria,Prieto,Finance,Payroll Clerk
+Alvaro,Santos,Sales,Sales Manager
+Carmen,Vidal,Sales,Account Manager
+Raul,Medina,Sales,Account Manager
+Irene,Fuentes,Sales,Account Manager
+Sergio,Pastor,Sales,Sales Representative
+Laura,Gil,Sales,Sales Representative
+Hugo,Rubio,Sales,Sales Representative
+Paula,Serrano,Sales,Sales Representative
+Adrian,Cano,Sales,Online Shop Manager
+Clara,Lozano,Sales,Customer Service
+Ivan,Mendez,Logistics,Logistics Manager
+Rocio,Vega,Logistics,Route Planner
+Daniel,Crespo,Logistics,Route Planner
+Alba,Marquez,Logistics,Purchasing Officer
+Marcos,Rios,Logistics,Driver
+Noelia,Calvo,Logistics,Driver
+Ruben,Soler,Logistics,Driver
+Silvia,Arias,Logistics,Driver
+Jorge,Benitez,Warehouse,Warehouse Manager
+Ana,Moya,Warehouse,Quality Control
+Victor,Leon,Warehouse,Warehouse Operator
+Cristina,Rojas,Warehouse,Warehouse Operator
+Oscar,Guerrero,Warehouse,Warehouse Operator
+Beatriz,Nieto,Warehouse,Warehouse Operator
+Mario,Pascual,Warehouse,Forklift Operator
+Eva,Carmona,Warehouse,Forklift Operator
+Tomas,Vicente,Warehouse,Stock Controller
+Lorena,Ferrer,Warehouse,Stock Controller
+Carlos,Ruiz,IT,IT Manager
+Andrea,Campos,IT,Systems Technician
+Manuel,Reyes,IT,Support Technician
+Natalia,Soto,IT,Support Technician
