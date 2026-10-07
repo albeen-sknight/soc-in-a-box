@@ -44,10 +44,20 @@ New-NetIPAddress -InterfaceIndex $adapter.ifIndex -IPAddress $IPAddress -PrefixL
 # Use DC01 as the DNS server, the way every machine in a Windows domain finds its domain controller
 Set-DnsClientServerAddress -InterfaceIndex $adapter.ifIndex -ServerAddresses $DcAddress
 
-# Make sure DC01 answers before trying to join
+# Make sure DC01 answers before trying to join. I knock on its directory port (LDAP, 389)
+# instead of pinging, because a fresh address can take a few seconds to come up
+# and DC01's firewall may ignore pings anyway.
 Write-Host "Checking that $DomainName is reachable..."
-if (-not (Test-Connection -ComputerName $DcAddress -Count 2 -Quiet)) {
-    throw "Can't reach DC01 at $DcAddress. Is it switched on?"
+$reachable = $false
+foreach ($try in 1..6) {
+    if (Test-NetConnection -ComputerName $DcAddress -Port 389 -InformationLevel Quiet -WarningAction SilentlyContinue) {
+        $reachable = $true
+        break
+    }
+    Start-Sleep -Seconds 5
+}
+if (-not $reachable) {
+    throw "Can't reach DC01 at $DcAddress on port 389. Is it switched on?"
 }
 Resolve-DnsName $DomainName -Type A | Out-Null
 
