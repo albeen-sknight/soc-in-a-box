@@ -1,0 +1,4 @@
+# Everyone can read what this app defines, only admins can change it
+[]
+access = read : [ * ], write : [ admin ]
+export = system

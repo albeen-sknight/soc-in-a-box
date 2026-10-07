@@ -1,0 +1,26 @@
+# Secrets: passwords and tokens live only in .env on each machine
+.env
+
+# Splunk add-ons downloaded from Splunkbase (their licence says don't redistribute)
+splunk/addons/*.tgz
+splunk/addons/*.tar.gz
+
+# Changes Splunk saves when I click around in the web interface
+splunk/apps/*/local/
+splunk/apps/*/metadata/local.meta
+
+# Windows install media and virtual machine disks are far too big for Git
+*.iso
+*.vhdx
+*.vhd
+*.vmdk
+*.vmx
+*.vmsd
+*.nvram
+*.avhdx
+
+# Editor and system clutter
+.vscode/
+Thumbs.db
+desktop.ini
+.DS_Store

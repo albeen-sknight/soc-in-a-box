@@ -1,0 +1,43 @@
+# SOC in a Box: the SOC side. This file runs on the laptop.
+# Phase 1 starts Splunk only. Wazuh and the alert relay join in later phases.
+# Start it with:  docker compose up -d
+
+name: soc-in-a-box
+
+services:
+  splunk:
+    # Pinned version, so the lab behaves the same every time I rebuild it
+    image: splunk/splunk:10.4.4
+    container_name: splunk
+    hostname: soc-splunk
+    restart: unless-stopped
+    environment:
+      # Splunk won't start unless both of these accept the licence and terms
+      SPLUNK_START_ARGS: --accept-license
+      SPLUNK_GENERAL_TERMS: --accept-sgt-current-at-splunk-com
+      # Both come from .env, and compose stops with a message if one is empty
+      SPLUNK_PASSWORD: ${SPLUNK_PASSWORD:?Set SPLUNK_PASSWORD in .env}
+      SPLUNK_HEC_TOKEN: ${SPLUNK_HEC_TOKEN:?Set SPLUNK_HEC_TOKEN in .env}
+      # The Windows and Sysmon add-ons, installed on first start (see splunk/addons/README.md)
+      SPLUNK_APPS_URL: /tmp/addons/windows-ta.tgz,/tmp/addons/sysmon-ta.tgz
+    ports:
+      # Splunk Web, opened to the tablet later by the laptop's firewall
+      - "8000:8000"
+      # HTTP Event Collector (HEC): WEB01 sends the WAF and Linux logs here
+      - "8088:8088"
+      # Receiving port for the Universal Forwarders on DC01, WS01 and WS02
+      - "9997:9997"
+      # Management API, reachable from the laptop itself only (the tests use it)
+      - "127.0.0.1:8089:8089"
+    volumes:
+      # Indexed data and settings survive a container restart or rebuild
+      - splunk-var:/opt/splunk/var
+      - splunk-etc:/opt/splunk/etc
+      # My own app: the indexes and inputs, kept as code in this repo
+      - ./splunk/apps/limonada_soc:/opt/splunk/etc/apps/limonada_soc
+      # The add-on files I download from Splunkbase, read only
+      - ./splunk/addons:/tmp/addons:ro
+
+volumes:
+  splunk-var:
+  splunk-etc:
