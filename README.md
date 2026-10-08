@@ -2,7 +2,7 @@
 
 I built a tiny company on my PC, put a security operations center next to it, and then broke into my own company to see if I'd catch myself.
 
-> **Status:** building. The company is up; next, the SOC.
+> **Status:** building. The company and the SOC are up, and 6 of 10 detections are live.
 
 ## What this is
 
@@ -55,6 +55,56 @@ The company lives on a private VMware network and the SOC lives outside it, in D
 | 7 | Work the alerts like a shift | Not started |
 | 8 | The second SIEM: Wazuh | Not started |
 | 9 | Detection tests and this handbook | Not started |
+
+## See it working
+
+The lab isn't a drawing, it runs. Here's the shift so far, in the order I built it.
+
+**The SOC comes up.** First I needed somewhere for the logs to land. Splunk runs in Docker on my PC, with four buckets ready: one for Windows events, one for Sysmon, one for the web shop, one spare for Linux.
+
+![Splunk's four indexes](docs/screenshots/01-splunk-indexes.png)
+
+*The four indexes, waiting for logs.*
+
+Raw Windows events are a wall of numbers, so Splunk needs two small apps to make sense of them. Here they are, installed.
+
+![The Windows and Sysmon apps installed](docs/screenshots/02-splunk-addons.png)
+
+*The two Splunk apps that turn raw event codes into readable fields.*
+
+**Logs from the company.** Once the machines had their forwarders, the events started arriving on their own.
+
+![Logs arriving from the lab machines](docs/screenshots/03-logs-arriving.png)
+
+*DC01, WS01 and WS02 sending their logs to the SOC.*
+
+**The dashboard.** This is what I look at when I sit down: failed logins, admin changes, WAF blocks, all on one screen.
+
+![The SOC dashboard](docs/screenshots/04-dashboard-first-look.png)
+
+*My camera room. One glance tells me if something looks off.*
+
+**An attack, start to finish.** Then I played the burglar. Someone hammered the web shop with bad requests, the WAF blocked them, and a minute later my detection fired.
+
+![D10 firing in Triggered Alerts](docs/screenshots/05-first-alert-d10.png)
+
+*Many WAF blocks, then a success from the same source. The alert caught the pattern.*
+
+A SOC analyst isn't always at the desk, so the same alert buzzed my phone.
+
+![D10 paging my phone](docs/screenshots/06-phone-page-d10.png)
+
+*The same alert, on my phone, seconds later.*
+
+**It pages for more than one thing.** The pager catches more than one kind of attack. Here it flags someone added to an admin group, and someone wiping a machine's security log.
+
+![D03 paging my phone](docs/screenshots/09-phone-page-d03.png)
+
+*Someone got put in the Administrators group. High priority.*
+
+![D08 paging my phone](docs/screenshots/10-phone-page-d08.png)
+
+*Someone cleared WS02's security log. Critical, and the SOC still kept every event the machine sent before the wipe.*
 
 ## How I learned it
 
