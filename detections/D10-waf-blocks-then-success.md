@@ -2,7 +2,7 @@
 
 **ATT&CK:** T1190 Exploit Public Facing Application
 **Log:** ModSecurity audit log from WEB01 (`index=waf`)
-**Alert:** `D10 WAF blocks then a success from the same source`, every 5 minutes over the last 15
+**Alert:** `D10 WAF blocks then a success from the same source`, every minute over the last 15 minutes
 **Severity:** high, pages my phone
 
 ## What it catches

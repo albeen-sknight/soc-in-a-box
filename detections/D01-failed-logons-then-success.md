@@ -2,7 +2,7 @@
 
 **ATT&CK:** T1110 Brute Force
 **Log:** Windows Security log, events 4625 (failed logon) and 4624 (successful logon), `index=wineventlog`
-**Alert:** `D01 Many failed logons then a success`, every 5 minutes over the last 15
+**Alert:** `D01 Many failed logons then a success`, every minute over the last 15 minutes
 **Severity:** high, pages my phone
 
 ## What it catches

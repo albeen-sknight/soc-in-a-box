@@ -21,6 +21,8 @@ services:
       SPLUNK_HEC_TOKEN: ${SPLUNK_HEC_TOKEN:?Set SPLUNK_HEC_TOKEN in .env}
       # The Windows and Sysmon add-ons, installed on first start (see splunk/addons/README.md)
       SPLUNK_APPS_URL: /tmp/addons/windows-ta.tgz,/tmp/addons/sysmon-ta.tgz
+      # Madrid time, so alert times on my phone match my clock
+      TZ: Europe/Madrid
     ports:
       # Splunk Web, on this PC only for now. Phase 4 opens it to the tablet.
       - "127.0.0.1:8000:8000"
