@@ -44,6 +44,12 @@ Two things I learned from it:
 - **`labadmin` is a local account, so only WS01 saw the failures.** DC01 never knew. For a domain account like `lucia.navarro`, DC01 would also log each wrong password as a Kerberos failure (4771). D02, the password spray detection, uses those.
 - **One login makes more than one 4624.** An admin login gets split into normal and elevated rights, and every screen unlock is a logon too. That's why I saw 18 successes for one test.
 
+Then I ran it as a real alert with a domain account. At WS01 I typed the wrong password for `lucia.navarro` again and again, then the right one. A minute later my phone buzzed: `[High] D01 Many failed logons then a success`, with her name, 27 failures, the time of the first failure and the time she got in. This time the hosts were DC01 and WS01, because DC01 checks domain passwords.
+
+![D01 paging my phone](../docs/screenshots/07-phone-page-d01.png)
+
+**A finding I didn't expect:** Lucia never got locked out, not even after 27 wrong passwords. `limonada.local` has no account lockout policy, so an attacker could guess forever and Windows would never stop them. Right now this detection is the only thing that notices. In a real company I'd recommend a lockout policy, and keep D01 as the second line.
+
 ## The incident that proved it
 
 INC-01, during the compressed week. _To be filled in._
