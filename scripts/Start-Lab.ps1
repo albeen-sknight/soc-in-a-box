@@ -1,6 +1,6 @@
 # Start-Lab.ps1
 # Brings the whole lab up in the right order: Docker, the SOC containers, WEB01, then DC01, WS01 and WS02.
-# At the end it checks which machines are sending logs and opens the SOC dashboard.
+# At the end it checks which machines are sending logs, opens the SOC dashboard and a terminal in the repo.
 # Run it from anywhere: it finds the repo from its own location.
 
 $ErrorActionPreference = 'Continue'                          # keep going if one step complains
@@ -28,9 +28,14 @@ function Wait-Until([scriptblock]$test, [int]$seconds, [int]$every = 5) {
 Say 'Docker Desktop'
 docker info *> $null
 if ($LASTEXITCODE -ne 0) {
-    Start-Process "$env:ProgramFiles\Docker\Docker\Docker Desktop.exe"   # open Docker Desktop if it is closed
-    if (Wait-Until { docker info *> $null; $LASTEXITCODE -eq 0 } 180) { Ok 'Docker is running' }
-    else { Warn 'Docker did not start in 3 minutes. Open Docker Desktop and run this again.'; return }
+    # Docker is not answering. Find Docker Desktop's exe and launch it; if it is not where we expect, ask you to open it.
+    $dockerExe = @("$env:ProgramFiles\Docker\Docker\Docker Desktop.exe",
+                   "$env:LOCALAPPDATA\Docker\Docker Desktop.exe") | Where-Object { Test-Path $_ } | Select-Object -First 1
+    if ($dockerExe) { Start-Process $dockerExe; Ok 'launching Docker Desktop' }
+    else { Warn 'Could not find Docker Desktop.exe. Open Docker Desktop yourself from the Start menu.' }
+    Write-Host '   waiting for the Docker engine' -NoNewline
+    if (Wait-Until { docker info *> $null; $LASTEXITCODE -eq 0 } 180 5) { Write-Host ''; Ok 'Docker is running' }
+    else { Write-Host ''; Warn 'Docker did not come up in 3 minutes. Open Docker Desktop, wait for the whale to go green, then run this again.'; return }
 } else { Ok 'Docker was already running' }
 
 # 2. WEB01, the WAF Flight Recorder containers (they already exist, so just start them)
@@ -99,3 +104,9 @@ foreach ($name in $labVms + 'WEB01') {
 Say 'Done'
 Start-Process $dashboard
 Ok 'SOC dashboard opened in your browser'
+
+
+# 8. Open a PowerShell window in the repo folder, ready for docker commands and the attacks
+Say 'Terminal'
+Start-Process powershell -ArgumentList '-NoExit', '-Command', "Set-Location '$repo'; Write-Host 'Lab terminal ready, you are in the repo folder.' -ForegroundColor Green"
+Ok 'opened a PowerShell window in the repo folder'
