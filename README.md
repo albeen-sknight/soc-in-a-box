@@ -49,7 +49,7 @@ The company lives on a private VMware network and the SOC lives outside it, in D
 | 1 | The SOC comes up: Splunk in Docker | Done |
 | 2 | Build the company: the domain, the staff, the logging, Sysmon | Done |
 | 3 | Onboard every log source: the forwarders | Done for Windows; WEB01 next |
-| 4 | The SOC dashboard and the wall screen | Not started |
+| 4 | WEB01 and the SOC dashboard | Done |
 | 5 | Ten detections and the pager | Not started |
 | 6 | The compressed week of attacks | Not started |
 | 7 | Work the alerts like a shift | Not started |

@@ -3,7 +3,7 @@
 **ATT&CK:** T1190 Exploit Public Facing Application
 **Log:** ModSecurity audit log from WEB01 (`index=waf`)
 **Alert:** `D10 WAF blocks then a success from the same source`, every 5 minutes over the last 15
-**Severity:** high
+**Severity:** high, pages my phone
 
 ## What it catches
 
@@ -21,11 +21,13 @@ index=waf
         max(eval(if(status>=200 AND status<400, _time, null()))) AS last_ok
         BY src_ip uri_path
 | where blocks >= 5 AND last_ok > first_block
-| fieldformat first_block=strftime(first_block, "%F %T")
-| fieldformat last_ok=strftime(last_ok, "%F %T")
+| eval first_block=strftime(first_block, "%F %T"),
+       last_ok=strftime(last_ok, "%F %T")
 ```
 
 It counts the blocks (status 403) for each source and page, remembers when the first block happened and when the last success happened, and keeps only the rows where a success came after the blocks started. A success is any 2xx or 3xx, because a redirect can mean someone got in too.
+
+I first wrote the last two lines with `fieldformat`, which only changes how the times look on screen. That's fine in Splunk, but the alert sends the real value to my phone, and the phone got a number like `1791413683`. With `eval` the phone gets a readable time. The `where` runs before it, so the comparison still uses the real numbers.
 
 ## What a false positive looks like
 

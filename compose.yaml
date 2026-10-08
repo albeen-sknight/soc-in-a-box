@@ -58,6 +58,18 @@ services:
       splunk:
         condition: service_healthy
 
+  # The pager: catches Splunk's alert webhooks and pushes a short message to my phone through ntfy.
+  # No published ports: only Splunk, inside Docker's network, can reach it.
+  pager-relay:
+    image: python:3.13-alpine
+    container_name: pager-relay
+    restart: unless-stopped
+    command: ["python", "-u", "/pager/relay.py"]
+    environment:
+      NTFY_TOPIC: ${NTFY_TOPIC:?Set NTFY_TOPIC in .env}
+    volumes:
+      - ./pager/relay.py:/pager/relay.py:ro
+
 volumes:
   splunk-var:
   splunk-etc:
