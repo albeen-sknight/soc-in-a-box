@@ -72,10 +72,10 @@ button{font:inherit;color:inherit}
 .hero .grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;opacity:.25;mask-image:radial-gradient(ellipse at 70% 45%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at 70% 45%,#000 30%,transparent 75%)}
 #map{position:absolute;inset:0;width:100%;height:100%;display:block}
 .hero .t{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:clamp(80px,14vh,140px) 24px 40px;min-height:inherit;display:flex;flex-direction:column;justify-content:center}
-.hero .t>div{max-width:440px}
+.hero .t>div{max-width:470px}
 .mark{display:inline-flex;align-items:center;gap:10px;font:600 13px "JetBrains Mono",monospace;color:var(--mut);letter-spacing:.06em;text-transform:uppercase;margin-bottom:18px}
 .mark svg{width:26px;height:26px}
-h1{font-size:clamp(46px,7vw,84px);letter-spacing:-.03em}
+h1{font-size:clamp(44px,5.4vw,74px);letter-spacing:-.03em;white-space:nowrap}
 h1 span{color:var(--acc-ink)}
 .hook{font-size:clamp(18px,2.1vw,21px);margin:16px 0 24px;color:var(--ink)}
 .row{display:flex;flex-wrap:wrap;align-items:center;gap:12px 14px}
@@ -116,7 +116,7 @@ h2{font-size:clamp(28px,4.4vw,40px);margin-bottom:12px}
 .note{margin-top:18px;padding:14px 18px;border-left:3px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;max-width:72ch}
 
 /* steps with screenshots */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:s}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;list-style:none;margin:0;padding:0}
 .step{display:flex;flex-direction:column;gap:10px}
 .step p{margin:0;font-size:15px;color:var(--mut)}
 .step b{display:block;font:600 12px "JetBrains Mono",monospace;color:var(--acc-ink)}
@@ -132,7 +132,7 @@ h2{font-size:clamp(28px,4.4vw,40px);margin-bottom:12px}
 .cbar .live i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
 .cbar .sp{flex:1}
 .cbar .btn{min-height:44px;font-size:14px;padding:6px 12px}
-.queue{border-right:1px solid var(--line);max-height:720px;overflow:auto;margin:0;padding:0;list-style:none}
+.queue{border-right:1px solid var(--line);margin:0;padding:0;list-style:none}
 .queue li{border-bottom:1px solid var(--line)}
 .queue button{display:grid;grid-template-columns:44px 1fr auto;gap:2px 10px;width:100%;text-align:left;background:transparent;border:0;border-left:3px solid transparent;padding:12px 12px 12px 11px;cursor:pointer;min-height:64px}
 .queue button:hover{background:var(--panel2)}
@@ -166,9 +166,11 @@ h2{font-size:clamp(28px,4.4vw,40px);margin-bottom:12px}
 .logs{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .logs li{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font-size:14.5px}
 .logs code{white-space:normal}
+pre code{white-space:pre;background:none;border:0;padding:0;font-size:inherit}
 pre{margin:0;max-width:100%;overflow:auto;background:var(--shot);color:#dce3ea;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:12.8px;line-height:1.6;tab-size:2}
 .cmd pre{border-left:3px solid var(--acc)}
 .codewrap{position:relative}
+.codewrap pre{padding-top:48px}
 .copy{position:absolute;top:8px;right:8px;min-height:36px;min-width:64px;font:600 12px "JetBrains Mono",monospace;border-radius:8px;border:1px solid #33424f;background:#121a22;color:#dce3ea;cursor:pointer}
 .copy:hover{border-color:var(--acc)}
 .k{color:#f4e04d}.f{color:#7cc4ff}.s{color:#9be28c}.o{color:#ff9fd1}.p{color:#8899aa}
@@ -195,11 +197,14 @@ figcaption{font-size:13px;color:var(--mut);margin-top:6px}
 /* timeline */
 .tl{overflow-x:auto;padding:6px 2px 18px;scroll-snap-type:x proximity}
 .tl:focus-visible{outline-offset:-3px}
-.tl-in{display:flex;gap:18px;width:max-content}
+.tl-in{display:flex;gap:18px;width:max-content;align-items:flex-start}
+.tlnav{display:flex;gap:8px;justify-content:flex-end;margin:-8px 0 10px}
+.tlnav button{min-width:44px;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--panel);cursor:pointer;font-size:18px}
+.tlnav button:hover{border-color:var(--acc-ink)}
 .grp{display:flex;flex-direction:column;gap:12px}
 .grp h3{font:600 13px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);padding:0 0 10px;border-bottom:2px solid var(--line);position:relative}
 .grp h3:after{content:"";position:absolute;left:0;bottom:-6px;width:10px;height:10px;border-radius:50%;background:var(--acc)}
-.grp .cards{display:flex;gap:12px}
+.grp .cards{display:flex;gap:12px;align-items:stretch}
 .dc{width:270px;scroll-snap-align:start;display:flex;flex-direction:column;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
 .dc .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .dc .id{font:600 15px "JetBrains Mono",monospace;color:var(--acc-ink)}
@@ -217,11 +222,12 @@ figcaption{font-size:13px;color:var(--mut);margin-top:6px}
 .pager{display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:start}
 .flow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 18px;padding:0;list-style:none}
 .flow li{display:flex;align-items:center;gap:10px}
-.flow li span{font:600 13px "JetBrains Mono",monospace;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.flow li>span{font:600 13px "JetBrains Mono",monospace;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
 .flow li+li:before{content:"";width:22px;height:2px;background:var(--acc)}
 .secret{letter-spacing:.1em;color:var(--mut)}
 
 /* findings */
+.find{grid-template-columns:1fr 1fr}
 .find .card{position:relative;padding-top:22px}
 .find .card:before{content:"";position:absolute;left:18px;right:18px;top:0;height:3px;background:var(--acc);border-radius:0 0 3px 3px}
 .find .from{display:block;margin-top:12px;font:600 12px "JetBrains Mono",monospace;color:var(--acc-ink)}
@@ -262,6 +268,45 @@ footer{max-width:1000px;margin:72px auto 0;padding:28px 20px calc(36px + env(saf
 footer .row{margin-top:10px}
 footer a{min-height:44px;display:inline-flex;align-items:center}
 
+/* drawn pieces shared by icons, the hero map and the bridge */
+.i-b{fill:var(--panel2);stroke:var(--mut);stroke-width:2}
+.i-l{fill:none;stroke:var(--mut);stroke-width:2.5;stroke-linecap:round}
+.i-a{fill:var(--acc)}
+.i-d{fill:none;stroke:var(--mut);stroke-width:2;stroke-dasharray:4 3}
+.m-lab{font:600 15px "JetBrains Mono",monospace;fill:var(--ink)}
+.m-sub{font:500 12px "JetBrains Mono",monospace;fill:var(--mut)}
+.m-box{fill:color-mix(in srgb,var(--bg) 70%,transparent);stroke:var(--acc);stroke-width:1.5;stroke-dasharray:8 6;opacity:.85}
+.m-boxlab{font:600 13px "JetBrains Mono",monospace;fill:var(--acc-ink);letter-spacing:.06em}
+.m-wire{fill:none;stroke:var(--line);stroke-width:1.5;stroke-dasharray:2 6}
+.m-panel{fill:var(--panel);stroke:var(--line);stroke-width:1.5}
+.m-row{fill:var(--panel2)}
+.m-rowt{font:600 12px "JetBrains Mono",monospace;fill:var(--ink)}
+.m-ring{fill:none;stroke-width:3;transform-box:fill-box;transform-origin:center;animation:pulse 1.1s ease-out 3}
+@keyframes pulse{from{transform:scale(.8);opacity:1}to{transform:scale(1.25);opacity:.15}}
+.m-atk{stroke:var(--mut);stroke-width:2;stroke-dasharray:6 6;fill:none}
+.m-chip{fill:var(--panel);stroke-width:1.5}
+.m-chipt{font:600 13px "JetBrains Mono",monospace;fill:var(--ink)}
+.m-dot{fill:var(--info);opacity:.85}
+.m-cap{font:500 12px "JetBrains Mono",monospace;fill:var(--mut)}
+.m-phone{fill:#0a0d11;stroke:#3a444e;stroke-width:1.5}
+.m-scr{fill:#1b2229}
+.m-ntf{fill:#2a3036}
+.m-ntft{font:700 10px "IBM Plex Sans",sans-serif;fill:#fff}
+.m-ntfs{font:500 9px "JetBrains Mono",monospace;fill:#c9d0d6}
+.m-buzz{transform-box:fill-box;transform-origin:center;animation:buzz .5s linear}
+#map.tall .m-lab{font-size:19px}
+#map.tall .m-sub,#map.tall .m-cap,#map.tall .m-rowt{font-size:15px}
+#map.tall .m-boxlab{font-size:16px}
+#map.tall .m-chipt{font-size:16px}
+.pnote{font-size:13px;color:var(--mut);max-width:300px;margin:10px 0 0}
+.phone.mini{width:min(280px,100%);border-radius:28px;padding:10px}
+.phone.mini:before{width:64px;height:14px;margin-bottom:6px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font:600 13px "JetBrains Mono",monospace;color:var(--mut)}
+.meta a{min-height:32px;display:inline-flex;align-items:center}
+.insp .when{font-size:13px;color:var(--mut);margin:0}
+.queue .hs em{font-style:normal;color:var(--ok)}
+.quiet{font-size:14.5px;color:var(--mut);border:1px dashed var(--line);border-radius:10px;padding:10px 14px;margin:0}
+
 /* lightbox */
 dialog{border:1px solid var(--line);border-radius:14px;padding:0;background:var(--panel);color:var(--ink);max-width:min(1200px,96vw);max-height:92vh;overflow:auto}
 dialog::backdrop{background:rgba(3,6,10,.82)}
@@ -277,10 +322,14 @@ dialog .bar button{min-width:44px;min-height:44px;border-radius:10px;border:1px 
   .hero .t>div{max-width:none}
   .maptext{position:static;display:block;padding:0 16px 14px}
   .console{grid-template-columns:1fr}
-  .queue{border-right:0;border-bottom:1px solid var(--line);max-height:300px}
+  .queue{border-right:0;border-bottom:1px solid var(--line);max-height:300px;overflow:auto}
   .steps{grid-template-columns:1fr 1fr}
   .pager{grid-template-columns:1fr}
   .pager .phone{margin:0 auto}
+  .hero{display:flex;flex-direction:column}
+  .hero .t{order:1}
+  #map{order:2}
+  .maptext{order:3}
   .tutor{grid-template-columns:1fr}
   .tutor svg{max-width:320px}
   .about{grid-template-columns:1fr}
@@ -290,7 +339,13 @@ dialog .bar button{min-width:44px;min-height:44px;border-radius:10px;border:1px 
   main section{padding:56px 16px 4px}
   footer{padding-left:16px;padding-right:16px}
   .tl{overflow:visible;padding:0}
-  .tl-in{flex-direction:column;width:auto;gap:26px}
+  .tl-in{flex-direction:column;width:auto;gap:26px;align-items:stretch}
+  .tlnav{display:none}
+  .find{grid-template-columns:1fr}
+  h1{white-space:normal}
+  .flow{flex-direction:column;align-items:flex-start;gap:0}
+  .flow li{flex-direction:column;align-items:flex-start}
+  .flow li+li:before{width:2px;height:16px;margin-left:20px}
   .grp .cards{flex-direction:column}
   .dc,.dc.d06{width:auto}
   .steps{grid-template-columns:1fr}
@@ -311,7 +366,7 @@ dialog .bar button{min-width:44px;min-height:44px;border-radius:10px;border:1px 
 <a class="skip" href="#story" data-i="skip">Skip to the story</a>
 
 <div id="ctl">
-  <button id="theme" type="button" data-ia="theme" aria-label="Switch theme"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/><circle cx="12" cy="12" r="4.5" fill="currentColor"/></svg></button>
+  <button id="theme" type="button" data-ia="theme" aria-label="Light theme" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/><circle cx="12" cy="12" r="4.5" fill="currentColor"/></svg></button>
   <div id="lang" role="group" data-ia="lang" aria-label="Language"><button type="button" data-l="en" aria-pressed="true">EN</button><button type="button" data-l="es" aria-pressed="false">ES</button></div>
 </div>
 
@@ -372,6 +427,7 @@ dialog .bar button{min-width:44px;min-height:44px;border-radius:10px;border:1px 
   <p class="kick" data-i="k_ten">The ten detections</p>
   <h2 id="h-ten" data-i="ten_h">In the order an intruder trips them</h2>
   <p class="lead" data-i="ten_p">Each detection is a saved SPL search that runs every minute over the last fifteen, mapped to a MITRE ATT&amp;CK technique. The serious ones page my phone. The quieter ones sit on the dashboard as context, so the pager stays meaningful.</p>
+  <div class="tlnav"><button type="button" id="tlprev" data-ia="tl_prev" aria-label="Earlier detections">←</button><button type="button" id="tlnext" data-ia="tl_next" aria-label="Later detections">→</button></div>
   <div class="tl" id="tl" tabindex="0" role="region" data-ia="tl_l" aria-label="Detection timeline"></div>
 </section>
 
@@ -379,7 +435,7 @@ dialog .bar button{min-width:44px;min-height:44px;border-radius:10px;border:1px 
   <p class="kick" data-i="k_pager">The pager</p>
   <h2 id="h-pager" data-i="pager_h">Alerts are no use if I'm not staring at the screen</h2>
   <div class="pager">
-    <div class="phone" id="pphone"><div class="scr" id="pscreen"></div></div>
+    <div><div class="phone" id="pphone"><div class="scr" id="pscreen"></div></div><p class="pnote" data-i="pager_note"></p></div>
     <div>
       <ol class="flow"><li><span data-i="fl1">Splunk alert</span></li><li><span>relay.py</span></li><li><span><span data-i="fl3">private ntfy topic</span> <span class="secret" aria-hidden="true">••••••</span></span></li><li><span data-i="fl4">my phone</span></li></ol>
       <p data-i="pager_p1">A Splunk alert calls a small relay I wrote, which forwards it to a private ntfy topic that my phone is subscribed to. The topic name is a secret kept out of the repo, so nobody else can read my alerts.</p>
@@ -466,13 +522,13 @@ dialog .bar button{min-width:44px;min-height:44px;border-radius:10px;border:1px 
   <div class="row"><a href="https://github.com/albeen-sknight" data-i="f_gh">GitHub profile</a><a href="https://github.com/albeen-sknight/soc-in-a-box" data-i="f_repo">SOC in a Box on GitHub</a><a href="https://albeen-sknight.github.io/waf-flight-recorder/">WAF Flight Recorder</a><a href="https://albeen-sknight.github.io/pocket-pantheon/">Pocket Pantheon</a></div>
 </footer>
 
-<dialog id="lb" aria-labelledby="lbcap"><div class="bar"><span id="lbcap"></span><button type="button" id="lbx" data-ia="close" aria-label="Close">×</button></div><img id="lbimg" alt="" src="data:," width="1" height="1"></dialog>
+<dialog id="lb" aria-labelledby="lbcap"><div class="bar"><span id="lbcap"></span><button type="button" id="lbx" data-ia="close" aria-label="Close">×</button></div><img id="lbimg" alt=""></dialog>
 
 <script>
 const L={
 en:{
 doc:"SOC in a Box: I broke into my own company to see if I'd catch myself",
-skip:"Skip to the story",theme_l:"Switch to light theme",theme_d:"Switch to dark theme",lang:"Language",close:"Close",
+skip:"Skip to the story",theme:"Light theme",lang:"Language",close:"Close",
 map_t:"Live map of Limonada S.L. and its SOC",
 map_d:"A dashed boundary holds the lab network with DC01, WS01, WS02 and WEB01, and the attacker at its edge. Outside it sit the SOC, Splunk in Docker, and a phone. Small log dots flow from every machine to the SOC. Every few seconds an attack plays: a machine flashes, its detection ID appears, an alert races to the SOC in its severity colour and, for High and Critical detections, the phone buzzes.",
 hook:"I built a tiny company on my PC, put a security operations center next to it, and then broke into my own company to see if I'd catch myself.",
@@ -527,16 +583,16 @@ D07_n:"New scheduled task",D07_s:"Scheduled task",
 D08_n:"Security log cleared",D08_s:"Log cleared",
 D09_n:"Office starting a shell",D09_s:"Office spawns shell",
 D10_n:"WAF blocks then a success",D10_s:"WAF blocks, then 200",
-D01_did:"At WS01's login screen I typed the wrong password for the domain account <code>lucia.navarro</code> again and again, then the right one. She never got locked out. DC01 and WS01 both logged it, because DC01 checks domain passwords.",
-D02_did:"From WS01, as a normal user, I ran a <code>net use</code> loop against DC01: 15 made up usernames, one password, each one failing on purpose. That's 15 failed logons from one source in a few seconds, well over the threshold of 10.",
-D03_did:"On WS02, as the local admin <code>labadmin</code>, I created a local account and added it to Administrators.",
-D04_did:"On WS02, as <code>labadmin</code>, I created a brand new local account called <code>helpdesk.temp</code>.",
-D05_did:"Three PowerShell commands on WS01: one <code>-EncodedCommand</code>, one <code>-WindowStyle Hidden</code> and one inline <code>FromBase64String</code>. This is the hidden window one, the alert that reached my phone.",
-D06_did:"A small PowerShell test that asks Windows for a read handle to LSASS with <code>0x1010</code>, the exact access a dumper needs, without reading a single byte. Denied. Elevated: denied. Elevated with the debug privilege dumpers rely on: still denied.",
-D07_did:"On WS02, as <code>labadmin</code>, I created a scheduled task that runs Notepad once.",
-D08_did:"On WS02, as <code>labadmin</code>, after creating the D03, D04 and D07 test events and waiting a minute, I wiped the Security log.",
-D09_did:"Office isn't installed on these machines, so I proved the logic with a stand in: I copied <code>cmd.exe</code> to a file named <code>winword.exe</code> and had it spawn a shell.",
-D10_did:"I sent six SQL injections to <code>/rest/products/search</code> on the web shop, then one normal search for <code>apple</code>.",
+D01_did:"Typed the wrong password for <code>lucia.navarro</code> at WS01 again and again, then the right one.",
+D02_did:"Sprayed one password against 15 made up accounts from WS01.",
+D03_did:"Created a local account on WS02 and added it to Administrators.",
+D04_did:"Created a new local account called <code>helpdesk.temp</code> on WS02.",
+D05_did:"Started PowerShell on WS01 with an encoded command, then with a hidden window.",
+D06_did:"Asked Windows on WS01 for read access to LSASS memory, and was refused every time.",
+D07_did:"Created a scheduled task on WS02 that opens Notepad once.",
+D08_did:"Cleared the Security log on WS02.",
+D09_did:"Had a stand in for Word open a command prompt on WS01, since Office isn't installed.",
+D10_did:"Sent a burst of requests the WAF blocked to the web shop's search, then one normal search.",
 D03_res:"One new row: <code>WS02</code>, <code>labadmin</code> to <code>Administrators</code>, member SID ending in <code>1002</code>, a new local account.",
 D04_res:"One row: <code>WS02</code>, <code>labadmin</code> created <code>helpdesk.temp</code>. The raw search had 49 rows; with the filters, it's 1.",
 D06_res:"No alert. The denied opens never produced a Sysmon event 10, so the gate stayed at 0 events after every attempt. The registry said why: <code>RunAsPPL = 2</code>.",
@@ -558,7 +614,7 @@ d06_l1:"Asked normally",d06_l2:"Asked elevated",d06_l3:"Elevated, with the debug
 denied:"Denied",why:"Why",
 d06_p2:"The detection is built and correct. On these hosts the operating system stops the attack upstream: a defense found, not a failure.",
 g_in:"Getting in",g_hold:"Taking hold",g_code:"Running code they shouldn't",g_keys:"After the keys",g_tracks:"Covering tracks",g_web:"The web shop",
-tl_l:"The ten detections, grouped by attack stage. Scroll sideways for more.",
+tl_l:"The ten detections, grouped by attack stage. Scroll sideways for more.",tl_prev:"Earlier detections",tl_next:"Later detections",
 k_ten:"The ten detections",ten_h:"In the order an intruder trips them",
 ten_p:"Each detection is a saved SPL search that runs every minute over the last fifteen, mapped to a MITRE ATT&amp;CK technique. The serious ones page my phone. The quieter ones sit on the dashboard as context, so the pager stays meaningful.",
 k_pager:"The pager",pager_h:"Alerts are no use if I'm not staring at the screen",
@@ -612,7 +668,7 @@ f_gh:"GitHub profile",f_repo:"SOC in a Box on GitHub"
 },
 es:{
 doc:"SOC in a Box: entré en mi propia empresa para ver si me pillaba",
-skip:"Saltar a la historia",theme_l:"Cambiar al tema claro",theme_d:"Cambiar al tema oscuro",lang:"Idioma",close:"Cerrar",
+skip:"Saltar a la historia",theme:"Tema claro",lang:"Idioma",close:"Cerrar",
 map_t:"Mapa en vivo de Limonada S.L. y su SOC",
 map_d:"Un borde discontinuo encierra la red del laboratorio con DC01, WS01, WS02 y WEB01, y el atacante en su límite. Fuera están el SOC, Splunk en Docker, y un móvil. Pequeños puntos de log viajan de cada máquina al SOC. Cada pocos segundos se reproduce un ataque: una máquina parpadea, aparece el ID de su detección, una alerta corre hacia el SOC con el color de su gravedad y, en las detecciones High y Critical, el móvil vibra.",
 hook:"Monté una pequeña empresa en mi ordenador, puse un centro de operaciones de seguridad al lado y luego entré en mi propia empresa para ver si me pillaba.",
@@ -667,16 +723,16 @@ D07_n:"Nueva tarea programada",D07_s:"Tarea programada",
 D08_n:"Registro de seguridad borrado",D08_s:"Registro borrado",
 D09_n:"Office abriendo una consola",D09_s:"Office abre consola",
 D10_n:"Bloqueos del WAF y luego un éxito",D10_s:"Bloqueos y luego 200",
-D01_did:"En la pantalla de inicio de WS01 escribí una y otra vez la contraseña equivocada de la cuenta de dominio <code>lucia.navarro</code>, y luego la buena. Nunca se bloqueó. DC01 y WS01 lo registraron, porque DC01 comprueba las contraseñas del dominio.",
-D02_did:"Desde WS01, como usuario normal, lancé un bucle de <code>net use</code> contra DC01: 15 nombres de usuario inventados, una sola contraseña, cada intento fallando a propósito. Son 15 inicios de sesión fallidos desde un origen en pocos segundos, muy por encima del umbral de 10.",
-D03_did:"En WS02, como el administrador local <code>labadmin</code>, creé una cuenta local y la añadí a Administrators.",
-D04_did:"En WS02, como <code>labadmin</code>, creé una cuenta local nueva llamada <code>helpdesk.temp</code>.",
-D05_did:"Tres comandos de PowerShell en WS01: uno con <code>-EncodedCommand</code>, otro con <code>-WindowStyle Hidden</code> y otro con <code>FromBase64String</code> en línea. Este es el de la ventana oculta, la alerta que llegó a mi móvil.",
-D06_did:"Una pequeña prueba en PowerShell que pide a Windows un acceso de lectura a LSASS con <code>0x1010</code>, justo el que necesita un volcador, sin leer ni un byte. Denegado. Con permisos elevados: denegado. Elevado y con el privilegio de depuración del que dependen los volcadores: denegado otra vez.",
-D07_did:"En WS02, como <code>labadmin</code>, creé una tarea programada que abre el Bloc de notas una vez.",
-D08_did:"En WS02, como <code>labadmin</code>, después de generar los eventos de prueba de D03, D04 y D07 y esperar un minuto, borré el registro de seguridad.",
-D09_did:"Office no está instalado en estas máquinas, así que probé la lógica con un sustituto: copié <code>cmd.exe</code> a un archivo llamado <code>winword.exe</code> e hice que abriera una consola.",
-D10_did:"Mandé seis inyecciones SQL a <code>/rest/products/search</code> en la tienda web y luego una búsqueda normal de <code>apple</code>.",
+D01_did:"Escribí en WS01 la contraseña equivocada de <code>lucia.navarro</code> una y otra vez, y luego la buena.",
+D02_did:"Probé una sola contraseña contra 15 cuentas inventadas desde WS01.",
+D03_did:"Creé una cuenta local en WS02 y la añadí a Administrators.",
+D04_did:"Creé en WS02 una cuenta local nueva llamada <code>helpdesk.temp</code>.",
+D05_did:"Arranqué PowerShell en WS01 con un comando codificado y luego con una ventana oculta.",
+D06_did:"Pedí a Windows en WS01 acceso de lectura a la memoria de LSASS, y me lo negó cada vez.",
+D07_did:"Creé en WS02 una tarea programada que abre el Bloc de notas una vez.",
+D08_did:"Borré el registro de seguridad de WS02.",
+D09_did:"Hice que un sustituto de Word abriera una consola en WS01, porque Office no está instalado.",
+D10_did:"Mandé a la tienda web una ráfaga de búsquedas que el WAF bloqueó y luego una búsqueda normal.",
 D03_res:"Una fila nueva: <code>WS02</code>, <code>labadmin</code> a <code>Administrators</code>, SID del miembro acabado en <code>1002</code>, una cuenta local nueva.",
 D04_res:"Una fila: <code>WS02</code>, <code>labadmin</code> creó <code>helpdesk.temp</code>. La búsqueda en bruto daba 49 filas; con los filtros, 1.",
 D06_res:"Sin alerta. Los intentos denegados nunca generaron un evento 10 de Sysmon, así que el contador siguió en 0 después de cada intento. El registro de Windows explicaba por qué: <code>RunAsPPL = 2</code>.",
@@ -698,7 +754,7 @@ d06_l1:"Pedido de forma normal",d06_l2:"Pedido con permisos elevados",d06_l3:"El
 denied:"Denegado",why:"Por qué",
 d06_p2:"La detección está hecha y es correcta. En estas máquinas el sistema operativo para el ataque antes: una defensa encontrada, no un fallo.",
 g_in:"Entrar",g_hold:"Hacerse fuerte",g_code:"Ejecutar lo que no deben",g_keys:"A por las llaves",g_tracks:"Borrar las huellas",g_web:"La tienda web",
-tl_l:"Las diez detecciones, agrupadas por fase del ataque. Desplázate a los lados para ver más.",
+tl_l:"Las diez detecciones, agrupadas por fase del ataque. Desplázate a los lados para ver más.",tl_prev:"Detecciones anteriores",tl_next:"Detecciones siguientes",
 k_ten:"Las diez detecciones",ten_h:"En el orden en que las pisa un intruso",
 ten_p:"Cada detección es una búsqueda SPL guardada que se ejecuta cada minuto sobre los últimos quince, mapeada a una técnica de MITRE ATT&amp;CK. Las serias avisan a mi móvil. Las más tranquilas se quedan en el panel como contexto, para que el aviso siga significando algo.",
 k_pager:"El buscapersonas",pager_h:"Las alertas no sirven si no estoy mirando la pantalla",
@@ -750,7 +806,688 @@ visit:"Visitar la página",
 foot:"Todos los nombres de este laboratorio son inventados. En esta página no aparecen direcciones IP ni nombres de usuario reales.",
 f_gh:"Perfil de GitHub",f_repo:"SOC in a Box en GitHub"
 }};
-/*APP*/
+const WRITEUP="https://github.com/albeen-sknight/soc-in-a-box/blob/main/detections/";
+const attackUrl=id=>"https://attack.mitre.org/techniques/"+id.replace(".","/")+"/";
+
+/* In the order an intruder trips them. The hero and the console both follow it. */
+const DET=[
+{id:"D01",sev:"high",st:"paged",grp:"g_in",host:"WS01",tech:"T1110",file:"D01-failed-logons-then-success.md",time:"03:10",
+ logs:[["Security 4625","ev4625"],["Security 4624","ev4624"]],idx:"index=wineventlog",
+ spl:String.raw`index=wineventlog (EventCode=4625 OR EventCode=4624) user!="*$" Logon_Type IN (2, 3, 7, 10, 11)
+| stats count(eval(EventCode=4625)) AS failures, count(eval(EventCode=4624)) AS successes,
+    min(eval(if(EventCode=4625, _time, null()))) AS first_fail,
+    max(eval(if(EventCode=4624, _time, null()))) AS last_success,
+    values(host) AS host, values(src_ip) AS src_ip BY user
+| where failures >= 10 AND successes >= 1 AND last_success > first_fail
+| eval first_fail=strftime(first_fail, "%F %T"), last_success=strftime(last_success, "%F %T")`,
+ shots:[["08-triggered-alerts-d01.png",1908,408,"alt08"]],
+ page:{t:"[High] D01 Many failed logons then a success",l:["user: lucia.navarro","failures: 27","successes: 10","first_fail: 2026-10-08 03:02:37","last_success: 2026-10-08 03:09:49","host: DC01, WS01"]}},
+{id:"D02",sev:"high",st:"paged",grp:"g_in",host:"WS01",tech:"T1110.003",file:"D02-password-spray.md",time:"15:20",
+ logs:[["Security 4625","ev4625"],["Security 4771","ev4771"]],idx:"index=wineventlog",
+ spl:String.raw`index=wineventlog (EventCode=4625 OR EventCode=4771)
+| eval src=coalesce(IpAddress, src_ip, Source_Network_Address)
+| eval acct=coalesce(TargetUserName, user, src_user)
+| search NOT acct="*$" NOT acct="ANONYMOUS LOGON"
+| where EventCode=4625 OR (EventCode=4771 AND Status="0x18")
+| bucket span=10m _time
+| stats dc(acct) as accounts values(acct) as accounts_list by _time, src
+| where accounts > 10
+| eval time=strftime(_time, "%F %T")`,
+ shots:[["11-d02-spray-row.png",1680,770,"alt11"]],
+ page:{t:"[High] D02 Password spray from one source",l:["src: 10.10.10.21","accounts: 15","accounts_list: ana.torres, clara.sanz, diego.marin, elena.vidal, hugo.blanco, ivan.molina, javier.gomez, lucia.ramos, marco.ruiz, nuria.cano, pablo.serra, raul.ortega, rosa.perez, sara.lopez, vera.gil","time: 2026-10-08 15:20:00"]}},
+{id:"D03",sev:"high",st:"paged",grp:"g_hold",host:"WS02",tech:"T1098",file:"D03-added-to-admin-group.md",time:"03:17",
+ logs:[["Security 4732","ev4732"],["Security 4728","ev4728"],["Security 4756","ev4756"]],idx:"index=wineventlog",
+ spl:String.raw`index=wineventlog (EventCode=4728 OR EventCode=4732 OR EventCode=4756)
+    Group_Name IN ("Administrators", "Domain Admins", "Enterprise Admins")
+    NOT src_user="*$" NOT src_user="ANONYMOUS LOGON"
+| eval member=coalesce(Member_Security_ID, member_id), time=strftime(_time, "%F %T")
+| table time host src_user member Group_Name`,
+ res:"D03_res",
+ page:{t:"[High] D03 Someone added to an admin group",l:["time: 2026-10-08 03:17:00","host: WS02","src_user: labadmin","member: S-1-5-21-2553280740-3410596446-3493538712-1002","Group_Name: Administrators"]}},
+{id:"D04",sev:"med",st:"fires",grp:"g_hold",host:"WS02",tech:"T1136.001",file:"D04-new-local-account.md",
+ logs:[["Security 4720","ev4720"]],idx:"index=wineventlog",
+ spl:String.raw`index=wineventlog EventCode=4720 NOT host=DC01 NOT src_user="*$" NOT src_user="ANONYMOUS LOGON"
+| eval time=strftime(_time, "%F %T")
+| table time host src_user user`,
+ res:"D04_res"},
+{id:"D07",sev:"med",st:"fires",grp:"g_hold",host:"WS02",tech:"T1053.005",file:"D07-new-scheduled-task.md",
+ logs:[["Security 4698","ev4698"]],idx:"index=wineventlog",
+ spl:String.raw`index=wineventlog EventCode=4698
+| eval creator=coalesce(src_user, user, Account_Name)
+| search NOT creator="*$" NOT Task_Name="*OneDrive*Task-S-1-5-21-*"
+| eval time=strftime(_time, "%F %T")
+| table time host creator Task_Name`,
+ res:"D07_res"},
+{id:"D05",sev:"high",st:"paged",grp:"g_code",host:"WS01",tech:"T1059.001",file:"D05-encoded-powershell.md",time:"15:47",
+ logs:[["PowerShell Operational 4104","ev4104"],["Security 4688","ev4688"]],idx:"index=wineventlog",
+ spl:String.raw`(index=wineventlog EventCode=4104 (Message="*frombase64string*" OR Message="*gnirtS46esaBmorF*"
+    OR ScriptBlockText="*frombase64string*" OR ScriptBlockText="*gnirtS46esaBmorF*"))
+OR (index=wineventlog EventCode=4688 (Process_Command_Line="*-enc *" OR Process_Command_Line="*-encodedcommand*"
+    OR Process_Command_Line="* -w hidden*" OR Process_Command_Line="*-windowstyle hidden*"
+    OR Process_Command_Line="*frombase64string*" OR CommandLine="*-enc *" OR CommandLine="*-encodedcommand*"
+    OR CommandLine="* -w hidden*" OR CommandLine="*-windowstyle hidden*" OR CommandLine="*frombase64string*"))
+| eval user=coalesce(user, src_user, Account_Name)
+| eval cmd=coalesce(Process_Command_Line, CommandLine, ScriptBlockText, Message)
+| eval evidence=if(EventCode=4104, "script block 4104", "command line 4688")
+| search NOT user="*$"
+| stats count min(_time) as first values(evidence) as evidence by host, user, cmd
+| eval time=strftime(first, "%F %T")`,
+ shots:[["13-d05-powershell.png",1669,565,"alt13"],["14-d05-scriptblock-field.png",1525,400,"alt14"]],
+ page:{t:"[High] D05 Encoded or hidden PowerShell",l:["host: WS01","user: lucia.navarro",String.raw`cmd: "C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -WindowStyle Hidden -Command "Start-Sleep -Seconds 2; Write-Host 'D05 hidden window test'"`,"count: 3","first: 1791467238.891","evidence: command line 4688"]}},
+{id:"D09",sev:"high",st:"paged",grp:"g_code",host:"WS01",tech:"T1204.002",file:"D09-office-spawns-shell.md",time:"16:31",
+ logs:[["Sysmon 1","evs1"],["Security 4688","ev4688"]],idx:"index=sysmon, index=wineventlog",
+ spl:String.raw`(index=sysmon EventCode=1) OR (index=wineventlog EventCode=4688)
+| eval parent=lower(coalesce(ParentImage, Parent_Process_Name, ParentProcessName))
+| eval child=lower(coalesce(Image, New_Process_Name, NewProcessName))
+| eval cmd=coalesce(CommandLine, Process_Command_Line)
+| eval user=coalesce(user, src_user, Account_Name)
+| where (like(parent, "%winword.exe") OR like(parent, "%excel.exe") OR like(parent, "%powerpnt.exe"))
+| where (like(child, "%cmd.exe") OR like(child, "%powershell.exe") OR like(child, "%pwsh.exe")
+    OR like(child, "%wscript.exe") OR like(child, "%cscript.exe") OR like(child, "%mshta.exe"))
+| stats count min(_time) as first values(cmd) as cmd by host, user, parent, child
+| eval time=strftime(first, "%F %T")`,
+ res:"D09_res",
+ page:{t:"[High] D09 Office starting a shell",l:["host: WS01","user: labadmin",String.raw`parent: c:\users\public\d09test\winword.exe`,String.raw`child: c:\windows\system32\cmd.exe`,"count: 1","first: 1791469906.475"]}},
+{id:"D06",sev:"crit",st:"blocked",grp:"g_keys",host:"WS01",tech:"T1003.001",file:"D06-lsass-access.md",
+ logs:[["Sysmon 10","evs10"]],idx:"index=sysmon",
+ spl:String.raw`index=sysmon EventCode=10 TargetImage="*\\lsass.exe"
+| search GrantedAccess IN ("0x1010", "0x1410", "0x1438", "0x143a", "0x1fffff")
+| search NOT SourceUser IN ("NT AUTHORITY\\SYSTEM", "NT AUTHORITY\\NETWORK SERVICE", "NT AUTHORITY\\LOCAL SERVICE")
+| stats count min(_time) as first by Computer, SourceImage, SourceUser, GrantedAccess, CallTrace
+| eval host=Computer
+| eval time=strftime(first, "%F %T")`,
+ res:"D06_res"},
+{id:"D08",sev:"crit",st:"paged",grp:"g_tracks",host:"WS02",tech:"T1070.001",file:"D08-security-log-cleared.md",
+ logs:[["Security 1102","ev1102"]],idx:"index=wineventlog",
+ spl:String.raw`index=wineventlog EventCode=1102
+| eval time=strftime(_time, "%F %T")
+| table time host user`,
+ res:"D08_res",
+ page:{t:"[Critical] D08 Security log cleared",l:["host: WS02","user: labadmin"],redrawn:true}},
+{id:"D10",sev:"high",st:"paged",grp:"g_web",host:"WEB01",tech:"T1190",file:"D10-waf-blocks-then-success.md",time:"02:25",
+ logs:[["ModSecurity audit log","evwaf"]],idx:"index=waf",
+ spl:String.raw`index=waf
+| stats count AS total, count(eval(status=403)) AS blocks,
+    min(eval(if(status=403, _time, null()))) AS first_block,
+    max(eval(if(status>=200 AND status<400, _time, null()))) AS last_ok BY src_ip uri_path
+| where blocks >= 5 AND last_ok > first_block
+| eval first_block=strftime(first_block, "%F %T"), last_ok=strftime(last_ok, "%F %T")`,
+ shots:[["05-first-alert-d10.png",1910,372,"alt05"]],
+ page:{t:"[High] D10 WAF blocks then a success from the same source",l:["src_ip: 172.19.0.1","uri_path: /rest/languages","total: 7","blocks: 6","first_block: 2026-10-08 00:24:39","last_ok: 2026-10-08 00:24:41"]}}
+];
+const GROUPS=["g_in","g_hold","g_code","g_keys","g_tracks","g_web"];
+const SEV_KEY={crit:"sev_crit",high:"sev_high",med:"sev_med"};
+const REDUCE=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const NS="http://www.w3.org/2000/svg";
+
+let lang="en";
+let depth="simple";
+let selected="D05";
+let queued=0;
+
+const $=s=>document.querySelector(s);
+const t=k=>L[lang][k]??L.en[k]??k;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fill=(s,o)=>s.replace(/\{(\w+)\}/g,(_,k)=>o[k]);
+const byId=id=>DET.find(d=>d.id===id);
+const sevChip=sev=>`<span class="chip sev-${sev}">${t(SEV_KEY[sev])}</span>`;
+const stChip=st=>`<span class="st st-${st}">${t("st_"+st)}</span>`;
+
+function sibStore(key,value){
+  try{
+    if(value===undefined)return localStorage.getItem(key);
+    localStorage.setItem(key,value);
+  }catch(e){}
+  return null;
+}
+
+/* ---------- drawn icons, shared by the company cards and the hero ---------- */
+const ICONS={
+  server:'<rect x="18" y="6" width="28" height="52" rx="4" class="i-b"/><path d="M24 16h16M24 23h16M24 30h16" class="i-l"/><circle cx="32" cy="47" r="3.5" class="i-a"/>',
+  desk:'<rect x="6" y="10" width="52" height="34" rx="4" class="i-b"/><path d="M14 20h22M14 27h30M14 34h16" class="i-l"/><path d="M26 44l-3 9h18l-3-9" class="i-b"/><path d="M18 55h28" class="i-l"/>',
+  web:'<rect x="8" y="8" width="48" height="48" rx="6" class="i-b"/><path d="M8 20h48" class="i-l"/><circle cx="15" cy="14" r="2" class="i-a"/><circle cx="32" cy="38" r="11" class="i-d"/><path d="M21 38h22M32 27c-5 6-5 16 0 22M32 27c5 6 5 16 0 22" class="i-l" style="stroke-width:1.6"/>',
+  attacker:'<rect x="10" y="14" width="44" height="28" rx="3" class="i-d"/><path d="M4 48h56l-4 6H8z" class="i-d"/><path d="M18 24l6 4-6 4M28 33h10" class="i-l"/>',
+  soc:'<rect x="4" y="8" width="56" height="40" rx="4" class="i-b"/><path d="M4 17h56" class="i-l"/><rect x="10" y="22" width="44" height="6" rx="2" class="i-a"/><path d="M10 34h30M10 41h38" class="i-l"/><path d="M24 48l-2 8h20l-2-8" class="i-b"/>',
+  phone:'<rect x="18" y="4" width="28" height="56" rx="6" class="i-b"/><rect x="22" y="12" width="20" height="10" rx="2" class="i-a"/><path d="M24 30h16M24 36h12M28 54h8" class="i-l"/>'
+};
+const sibIcon=(kind,size=64)=>`<svg viewBox="0 0 64 64" width="${size}" height="${size}" aria-hidden="true">${ICONS[kind]}</svg>`;
+
+/* ---------- static sections ---------- */
+function renderDepth(){
+  $("#depth").innerHTML=t(depth==="simple"?"simple_p":"tech_p");
+  document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.d===depth));
+}
+
+function renderCompany(){
+  const rows=[["server","c_dc","on_pc"],["desk","c_ws","on_pc"],["web","c_web","on_pc"],["attacker","c_att","on_pc"],["soc","c_soc","on_pc"],["phone","c_pager","on_phone"]];
+  $("#co").innerHTML=rows.map(([icon,k,where])=>`<div class="card">${sibIcon(icon)}<div><h3>${t(k+"_n")}</h3><p>${t(k+"_w")}</p><span class="where">${t(where)}</span></div></div>`).join("");
+}
+
+function shotButton(file,w,h,altKey,cls=""){
+  return `<button type="button" class="shot ${cls}" data-src="screenshots/${file}" data-w="${w}" data-h="${h}" data-alt="${altKey}" aria-label="${esc(t("open_shot")+": "+t(altKey))}"><img src="screenshots/${file}" width="${w}" height="${h}" loading="lazy" alt="${esc(t(altKey))}"></button>`;
+}
+
+function renderSteps(){
+  const steps=[["01-splunk-indexes.png",1828,618,"alt01","s1"],["02-splunk-addons.png",1876,588,"alt02","s2"],["03-logs-arriving.png",1916,548,"alt03","s3"],["04-dashboard-first-look.png",1910,820,"alt04","s4"]];
+  $("#steps").innerHTML=steps.map(([f,w,h,alt,txt],i)=>`<li class="step">${shotButton(f,w,h,alt)}<div><b>${t("step")} ${i+1}</b><p>${t(txt)}</p></div></li>`).join("");
+}
+
+function renderFindings(){
+  $("#find").innerHTML=[1,2,3,4].map(n=>`<div class="card"><h3>${t(`f${n}_h`)}</h3><p>${t(`f${n}_p`)}</p><span class="from">${t(`f${n}_from`)}</span></div>`).join("");
+}
+
+function renderTaught(){
+  $("#taught").innerHTML=[1,2,3,4,5].map(n=>`<div class="card"><h3>${t(`t${n}_h`)}</h3><p>${t(`t${n}_p`)}</p></div>`).join("");
+}
+
+function renderRoad(){
+  const items=[["r1","done"],["r2","planned"],["r3","planned"],["r4","planned"]];
+  $("#road").innerHTML=items.map(([k,s],i)=>`<li class="${s==="done"?"done":""}"><span class="n">${s==="done"?"✓":i}</span><div><h3>${t(k+"_h")}</h3><p>${t(k+"_p")}</p></div><span class="rs ${s==="done"?"done":""}">${t(s)}</span></li>`).join("");
+}
+
+/* ---------- the ten detections as a timeline ---------- */
+function d06Card(d){
+  const steps=[["d06_l1","denied"],["d06_l2","denied"],["d06_l3","denied"],["d06_l4","why"]];
+  return `<article class="dc d06"><div class="top"><span class="id">${d.id}</span>${sevChip(d.sev)}${stChip(d.st)}</div>
+    <h4>${t("d06_h")}</h4><p>${t("d06_p1")}</p>
+    <ol class="ladder">${steps.map(([k,tag],i)=>`<li class="${i===3?"win":""}"><b>${t(tag)}</b><span>${t(k)}</span></li>`).join("")}</ol>
+    <p>${t("d06_p2")}</p>
+    <div class="ft"><a href="${attackUrl(d.tech)}">${d.tech}</a><a href="${WRITEUP+d.file}">${t("writeup")}</a></div></article>`;
+}
+
+function detCard(d){
+  if(d.id==="D06")return d06Card(d);
+  return `<article class="dc"><div class="top"><span class="id">${d.id}</span>${sevChip(d.sev)}${stChip(d.st)}</div>
+    <h4>${t(d.id+"_n")}</h4><p>${t(d.id+"_tl")}</p>
+    <div class="ft"><a href="${attackUrl(d.tech)}">${d.tech}</a><a href="${WRITEUP+d.file}">${t("writeup")}</a></div></article>`;
+}
+
+function renderTimeline(){
+  $("#tl").innerHTML=`<div class="tl-in">${GROUPS.map(g=>`<div class="grp"><h3>${t(g)}</h3><div class="cards">${DET.filter(d=>d.grp===g).map(detCard).join("")}</div></div>`).join("")}</div>`;
+}
+
+/* ---------- the analyst's console ---------- */
+function highlightSpl(src){
+  const re=/("(?:[^"\\]|\\.)*")|(\|)(\s*)([a-z]+)|\b(AND|OR|NOT|IN|BY|AS|by|as)\b|\b([a-z_]+)(?=\()/g;
+  let out="",last=0,m;
+  while((m=re.exec(src))){
+    out+=esc(src.slice(last,m.index));
+    if(m[1])out+=`<span class="s">${esc(m[1])}</span>`;
+    else if(m[2])out+=`<span class="p">|</span>${m[3]}<span class="k">${m[4]}</span>`;
+    else if(m[5])out+=`<span class="o">${m[5]}</span>`;
+    else out+=`<span class="f">${m[6]}</span>`;
+    last=re.lastIndex;
+  }
+  return out+esc(src.slice(last));
+}
+
+function phoneCard(page){
+  return `<div class="ntf"><div class="app"><i aria-hidden="true">&gt;_</i>ntfy</div><b>🚨 ${esc(page.t)}</b>${page.l.map(l=>`<div class="ln">${esc(l)}</div>`).join("")}</div>`;
+}
+
+function queueRow(d){
+  const blocked=d.st==="blocked";
+  const host=blocked?`${d.host} · <em>${t("no_alert")}</em>`:d.host;
+  return `<button type="button" data-id="${d.id}" aria-pressed="${d.id===selected}"><span class="tm">${d.time||""}</span><span class="nm"><span>${d.id}</span>${t(d.id+"_n")}</span><span class="hs">${host}</span><span class="sv">${sevChip(d.sev)}</span></button>`;
+}
+
+function renderQueue(fresh){
+  const list=$("#queue");
+  list.innerHTML=DET.slice(0,queued).map((d,i)=>`<li class="${fresh&&i===queued-1?"new":""}">${queueRow(d)}</li>`).join("");
+  $("#qcount").textContent=fill(t("qcount"),{n:queued});
+}
+
+function alertStep(d){
+  if(d.shots)return d.shots.map(([f,w,h,alt])=>`<figure>${shotButton(f,w,h,alt)}<figcaption>${t(alt)}</figcaption></figure>`).join("");
+  return `<p>${t("res_lbl")}</p><div class="result ${d.st==="blocked"?"defense":""}">${t(d.res)}</div>`;
+}
+
+function pageStep(d){
+  if(d.st==="blocked")return `<p class="quiet">${t("pg_d06")}</p>`;
+  if(!d.page)return `<p class="quiet">${t("pg_med")}</p>`;
+  const note=d.page.redrawn?`<p class="pnote">${t("pg_d08")}</p>`:"";
+  return `<div class="phone mini"><div class="scr">${phoneCard(d.page)}</div></div>${note}`;
+}
+
+function renderInspector(){
+  const d=byId(selected);
+  const when=d.time?`<p class="when">${fill(t("alert_at"),{t:d.time})}</p>`:"";
+  const logs=d.logs.map(([code,k])=>`<li><code>${code}</code><span>${t(k)}</span></li>`).join("")+`<li><code>${d.idx}</code></li>`;
+  $("#insp").innerHTML=`<header><span class="id">${d.id}</span>${sevChip(d.sev)}${stChip(d.st)}<h3>${t(d.id+"_n")}</h3></header>${when}
+  <ol class="chain">
+    <li><h4>${t("ch1")}</h4><p>${t(d.id+"_did")}</p><div class="meta"><span>ATT&amp;CK <a href="${attackUrl(d.tech)}">${d.tech}</a></span><a href="${WRITEUP+d.file}">${t("writeup")}</a></div></li>
+    <li><h4>${t("ch2")}</h4><ul class="logs">${logs}</ul></li>
+    <li><h4>${t("ch3")}</h4><div class="codewrap"><pre><code>${highlightSpl(d.spl)}</code></pre><button type="button" class="copy" data-copy="${d.id}">${t("copy")}</button></div></li>
+    <li><h4>${t("ch4")}</h4>${alertStep(d)}</li>
+    <li><h4>${t("ch5")}</h4>${pageStep(d)}</li>
+  </ol>`;
+}
+
+function selectAlert(id){
+  selected=id;
+  document.querySelectorAll("#queue button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===id));
+  renderInspector();
+}
+
+function fillQueue(){
+  queued=0;
+  renderQueue();
+  if(REDUCE){queued=DET.length;renderQueue();return}
+  const add=()=>{
+    if(queued>=DET.length)return;
+    queued++;
+    renderQueue(true);
+    setTimeout(add,380);
+  };
+  add();
+}
+
+function copySpl(btn){
+  const spl=byId(btn.dataset.copy).spl;
+  if(!navigator.clipboard)return;
+  navigator.clipboard.writeText(spl).then(()=>{
+    btn.textContent=t("copied");
+    setTimeout(()=>{btn.textContent=t("copy")},1600);
+  }).catch(()=>{});
+}
+
+/* ---------- the pager ---------- */
+function renderPager(){
+  $("#pscreen").innerHTML=["D01","D05","D08"].map(id=>phoneCard(byId(id).page)).join("");
+}
+
+/* ---------- svg helpers ---------- */
+function sibSvg(tag,attrs,parent,text){
+  const el=document.createElementNS(NS,tag);
+  for(const k in attrs)el.setAttribute(k,attrs[k]);
+  if(text!=null)el.textContent=text;
+  if(parent)parent.appendChild(el);
+  return el;
+}
+
+function placeIcon(parent,kind,x,y,size){
+  const g=sibSvg("svg",{x:x-size/2,y:y-size/2,width:size,height:size,viewBox:"0 0 64 64"},parent);
+  g.innerHTML=ICONS[kind];
+  return g;
+}
+
+/* ---------- hero map ---------- */
+const LAYOUTS={
+  wide:{w:1000,h:900,box:[40,150,520,560],lab:[62,138],icon:72,
+    nodes:{DC01:[170,300,"server"],WEB01:[430,300,"web"],WS01:[160,560,"desk"],WS02:[400,590,"desk"]},
+    att:[40,440],soc:[730,360,220,250],phone:[910,640],
+    wire:(x,y)=>`M${x},${y} C${x+170},${y} 520,360 620,360`,
+    toPhone:"M730,485 C730,600 910,520 910,555"},
+  tall:{w:600,h:700,box:[20,40,560,360],lab:[38,28],icon:76,
+    nodes:{DC01:[150,140,"server"],WEB01:[440,140,"web"],WS01:[150,300,"desk"],WS02:[340,310,"desk"]},
+    att:[520,400],soc:[180,565,280,190],phone:[480,575],
+    wire:(x,y)=>`M${x},${y+40} C${x},${y+150} 180,400 180,470`,
+    toPhone:"M320,565 C380,565 400,575 436,575"}
+};
+
+const H={svg:null,lay:null,mode:"",layers:{},wires:{},toPhone:null,dots:[],events:[],rows:[],vt:0,last:0,
+  running:false,visible:true,nextBg:400,nextAttack:1600,idx:0,frozen:0};
+
+function drawStatic(){
+  const {svg,lay}=H;
+  svg.querySelectorAll("g,svg,path,rect,text,circle,line").forEach(n=>{if(n.parentNode===svg)n.remove()});
+  const root=sibSvg("g",{},svg);
+  const [bx,by,bw,bh]=lay.box;
+  sibSvg("rect",{x:bx,y:by,width:bw,height:bh,rx:24,class:"m-box"},root);
+  sibSvg("text",{x:lay.lab[0],y:lay.lab[1],class:"m-boxlab"},root,t("lab_net").toUpperCase());
+  const wires=sibSvg("g",{},root);
+  H.wires={};
+  for(const [name,[x,y]] of Object.entries(lay.nodes))H.wires[name]=sibSvg("path",{d:lay.wire(x,y),class:"m-wire"},wires);
+  H.toPhone=sibSvg("path",{d:lay.toPhone,class:"m-wire"},wires);
+  H.layers.fx=sibSvg("g",{},root);
+  for(const [name,[x,y,kind]] of Object.entries(lay.nodes)){
+    placeIcon(root,kind,x,y,lay.icon);
+    sibSvg("text",{x,y:y+lay.icon/2+20,"text-anchor":"middle",class:"m-lab"},root,name);
+  }
+  const [ax,ay]=lay.att;
+  placeIcon(root,"attacker",ax,ay,lay.icon*.8);
+  sibSvg("text",{x:ax,y:ay+lay.icon*.4+18,"text-anchor":"middle",class:"m-sub"},root,t("att_lbl"));
+  drawSoc(root);
+  drawPhone(root);
+  H.layers.dots=sibSvg("g",{},root);
+  H.layers.top=sibSvg("g",{},root);
+}
+
+function drawSoc(root){
+  const [cx,cy,w,h]=H.lay.soc;
+  const x=cx-w/2,y=cy-h/2;
+  sibSvg("rect",{x,y,width:w,height:h,rx:14,class:"m-panel"},root);
+  sibSvg("text",{x:x+14,y:y+26,class:"m-lab"},root,t("soc_lbl"));
+  sibSvg("text",{x:x+14,y:y+44,class:"m-sub"},root,t("soc_sub"));
+  sibSvg("path",{d:`M${x} ${y+56}h${w}`,stroke:"var(--line)"},root);
+  H.layers.rows=sibSvg("g",{},root);
+  H.layers.cap=sibSvg("text",{x:cx,y:y+h+22,"text-anchor":"middle",class:"m-cap"},root,"");
+}
+
+function drawPhone(root){
+  const [px,py]=H.lay.phone;
+  const g=sibSvg("g",{},root);
+  sibSvg("rect",{x:px-46,y:py-85,width:92,height:170,rx:16,class:"m-phone"},g);
+  sibSvg("rect",{x:px-39,y:py-72,width:78,height:146,rx:9,class:"m-scr"},g);
+  sibSvg("text",{x:px,y:py+108,"text-anchor":"middle",class:"m-sub"},root,t("phone_lbl"));
+  H.layers.phone=g;
+  H.layers.ntf=sibSvg("g",{opacity:0},g);
+  sibSvg("rect",{x:px-35,y:py-62,width:70,height:44,rx:7,class:"m-ntf"},H.layers.ntf);
+  H.layers.ntf1=sibSvg("text",{x:px-30,y:py-45,class:"m-ntft"},H.layers.ntf,"");
+  H.layers.ntf2=sibSvg("text",{x:px-30,y:py-29,class:"m-ntfs"},H.layers.ntf,"");
+}
+
+function renderRows(){
+  const g=H.layers.rows;
+  if(!g)return;
+  g.innerHTML="";
+  const [cx,cy,w,h]=H.lay.soc;
+  const x=cx-w/2+12,y0=cy-h/2+68,rw=w-24;
+  H.rows.slice(0,4).forEach((id,i)=>{
+    const d=byId(id),y=y0+i*42;
+    sibSvg("rect",{x,y,width:rw,height:34,rx:6,class:"m-row"},g);
+    sibSvg("rect",{x,y,width:5,height:34,rx:2,style:`fill:var(--${d.sev})`},g);
+    sibSvg("text",{x:x+14,y:y+22,class:"m-rowt"},g,`${d.id} ${t(d.id+"_s")}`);
+  });
+}
+
+function addRow(d){
+  H.rows.unshift(d.id);
+  H.rows=H.rows.slice(0,4);
+  renderRows();
+}
+
+function sibLayout(){
+  const svg=$("#map");
+  const mode=innerWidth>900?"wide":"tall";
+  H.svg=svg;H.lay=LAYOUTS[mode];
+  svg.classList.toggle("tall",mode==="tall");
+  if(mode==="tall")svg.setAttribute("viewBox","0 0 600 700");
+  if(mode!==H.mode||!H.layers.dots){H.mode=mode;clearAttack();drawStatic();renderRows()}
+  if(mode==="wide")fitWide();
+  if(REDUCE)freezeAttack(DET[H.frozen]);
+}
+
+/* Fit the 1000 by 900 map into the space right of the hero text, at the largest scale that fits. */
+function fitWide(){
+  const r=H.svg.getBoundingClientRect();
+  const textRight=$(".hero .t>div").getBoundingClientRect().right-r.left+28;
+  const s=Math.max(.3,Math.min((r.width-textRight-20)/1000,r.height/900));
+  const vw=r.width/s,vh=r.height/s;
+  H.svg.setAttribute("viewBox",`${-textRight/s} ${(900-vh)/2} ${vw} ${vh}`);
+}
+
+function spawnDot(path,dur,opts={}){
+  const el=sibSvg("circle",{r:opts.r||4,class:opts.cls||""},H.layers.dots);
+  if(opts.style)el.setAttribute("style",opts.style);
+  H.dots.push({el,path,len:path.getTotalLength(),start:H.vt,dur,onEnd:opts.onEnd,fast:!!opts.fast});
+}
+
+function moveDots(){
+  const done=[];
+  H.dots=H.dots.filter(dot=>{
+    const p=(H.vt-dot.start)/dot.dur;
+    if(p>=1){dot.el.remove();done.push(dot);return false}
+    const pt=dot.path.getPointAtLength(dot.len*p);
+    dot.el.setAttribute("cx",pt.x);dot.el.setAttribute("cy",pt.y);
+    return true;
+  });
+  done.forEach(dot=>dot.onEnd&&dot.onEnd());
+}
+
+function at(delay,fn){H.events.push({when:H.vt+delay,fn})}
+
+function runEvents(){
+  const due=H.events.filter(e=>e.when<=H.vt);
+  if(!due.length)return;
+  H.events=H.events.filter(e=>e.when>H.vt);
+  due.forEach(e=>e.fn());
+}
+
+function clearAttack(){
+  H.events=[];
+  if(H.layers.fx)H.layers.fx.innerHTML="";
+  if(H.layers.top)H.layers.top.innerHTML="";
+  if(H.layers.cap)H.layers.cap.textContent="";
+  if(H.layers.ntf)H.layers.ntf.setAttribute("opacity",0);
+  H.dots=H.dots.filter(d=>{if(d.fast){d.el.remove();return false}return true});
+}
+
+function attackLabel(d,x,y){
+  const blocked=d.st==="blocked";
+  const text=blocked?`${d.id} · ${t("blocked_lbl")}`:`${d.id} ${t(d.id+"_s")}`;
+  const g=sibSvg("g",{},H.layers.top);
+  const rect=sibSvg("rect",{x,y:y-20,height:30,rx:8,class:"m-chip",style:`stroke:var(--${blocked?"ok":d.sev})`},g);
+  const label=sibSvg("text",{x:x+10,y:y,class:"m-chipt"},g,text);
+  rect.setAttribute("width",label.getComputedTextLength()+20);
+  const box=g.getBBox();
+  const limit=H.mode==="wide"?1000:600;
+  if(box.x+box.width>limit)g.setAttribute("transform",`translate(${limit-box.x-box.width-6},0)`);
+}
+
+function showMarks(d){
+  const [x,y]=H.lay.nodes[d.host];
+  const [ax,ay]=H.lay.att;
+  const colour=d.st==="blocked"?"var(--ok)":`var(--${d.sev})`;
+  sibSvg("line",{x1:ax,y1:ay,x2:x,y2:y,class:"m-atk"},H.layers.fx);
+  sibSvg("circle",{cx:x,cy:y,r:H.lay.icon*.62,class:"m-ring",style:`stroke:${colour}`},H.layers.fx);
+  attackLabel(d,x-H.lay.icon*.6,y-H.lay.icon*.62-12);
+}
+
+function showPage(d){
+  H.layers.ntf1.textContent=`[${t(SEV_KEY[d.sev])}] ${d.id}`;
+  H.layers.ntf2.textContent=t(d.id+"_s").slice(0,14);
+  H.layers.ntf.setAttribute("opacity",1);
+}
+
+function buzz(){
+  const g=H.layers.phone;
+  g.classList.remove("m-buzz");
+  void g.getBBox();
+  g.classList.add("m-buzz");
+}
+
+function announce(d){
+  const key=d.st==="blocked"?"live_blocked":d.page?"live_paged":"live_quiet";
+  $("#maplive").textContent=fill(t(key),{id:d.id,host:d.host,sev:t(SEV_KEY[d.sev])});
+}
+
+function playAttack(d){
+  clearAttack();
+  showMarks(d);
+  H.nextAttack=H.vt+7200;
+  at(5600,clearAttack);
+  if(d.st==="blocked")return;
+  const style=`fill:var(--${d.sev})`;
+  const toPhone=()=>spawnDot(H.toPhone,700,{r:6,style,fast:true,onEnd:()=>{showPage(d);buzz()}});
+  const reachSoc=()=>{
+    addRow(d);
+    if(d.page)toPhone();
+    else H.layers.cap.textContent=t("nopage_lbl");
+  };
+  at(700,()=>spawnDot(H.wires[d.host],900,{r:7,style,fast:true,onEnd:reachSoc}));
+}
+
+function freezeAttack(d){
+  clearAttack();
+  H.layers.dots.innerHTML="";
+  H.dots=[];
+  for(const path of Object.values(H.wires)){
+    const pt=path.getPointAtLength(path.getTotalLength()*.5);
+    sibSvg("circle",{cx:pt.x,cy:pt.y,r:4,class:"m-dot"},H.layers.dots);
+  }
+  showMarks(d);
+  if(d.st==="blocked")return;
+  const w=H.wires[d.host],pt=w.getPointAtLength(w.getTotalLength()*.62);
+  sibSvg("circle",{cx:pt.x,cy:pt.y,r:7,style:`fill:var(--${d.sev})`},H.layers.dots);
+  H.rows=[d.id];renderRows();
+  if(d.page)showPage(d);
+  else H.layers.cap.textContent=t("nopage_lbl");
+}
+
+function nextAttack(manual){
+  const d=DET[H.idx%DET.length];
+  H.idx++;
+  if(manual)announce(d);
+  if(REDUCE){H.frozen=DET.indexOf(d);freezeAttack(d);return}
+  playAttack(d);
+}
+
+function heroTick(){
+  if(H.vt>=H.nextBg){
+    const names=Object.keys(H.wires);
+    spawnDot(H.wires[names[Math.floor(Math.random()*names.length)]],2600+Math.random()*900,{cls:"m-dot"});
+    H.nextBg=H.vt+650;
+  }
+  if(H.vt>=H.nextAttack)nextAttack(false);
+  runEvents();
+  moveDots();
+}
+
+function sibAnimate(now){
+  if(!H.running)return;
+  H.vt+=Math.min(100,now-(H.last||now));
+  H.last=now;
+  heroTick();
+  requestAnimationFrame(sibAnimate);
+}
+
+function updateRunning(){
+  const should=H.visible&&!document.hidden&&!REDUCE;
+  if(should===H.running)return;
+  H.running=should;
+  H.last=0;
+  if(should)requestAnimationFrame(sibAnimate);
+}
+
+/* ---------- bridge diagram ---------- */
+const BRIDGE={
+  wide:{vb:"0 0 960 300",att:[70,100],gate:[300,100],web:[540,100],chips:[205,34],ok:[420,100],soc:[690,232,220,76],phone:[890,232],
+    log:"M300,160 C300,232 460,232 580,232",page:"M800,232 L858,232"},
+  narrow:{vb:"0 0 420 620",att:[60,110],gate:[210,110],web:[360,110],chips:[135,44],ok:[285,110],soc:[210,400,260,84],phone:[210,540],
+    log:"M210,170 C210,250 210,290 210,358",page:"M210,442 L210,482"}
+};
+
+function drawBridge(){
+  const svg=$("#bridge");
+  const B=BRIDGE[innerWidth>700?"wide":"narrow"];
+  svg.setAttribute("viewBox",B.vb);
+  svg.querySelectorAll(":scope > :not(title)").forEach(n=>n.remove());
+  const g=sibSvg("g",{},svg);
+  const label=(x,y,key,cls="m-sub")=>sibSvg("text",{x,y,"text-anchor":"middle",class:cls},g,t(key));
+  placeIcon(g,"attacker",B.att[0],B.att[1],64);label(B.att[0],B.att[1]+50,"b_att");
+  for(let i=0;i<6;i++){
+    const y=B.chips[1]+i*22;
+    sibSvg("rect",{x:B.chips[0]-24,y,width:48,height:18,rx:5,class:"m-chip",style:"stroke:var(--mut)"},g);
+    sibSvg("text",{x:B.chips[0],y:y+13,"text-anchor":"middle",class:"m-cap"},g,"403");
+  }
+  label(B.chips[0],B.chips[1]+6*22+16,"b_blocked","m-cap");
+  const [gx,gy]=B.gate;
+  sibSvg("rect",{x:gx-24,y:gy-48,width:48,height:96,rx:8,class:"m-panel"},g);
+  for(let i=0;i<4;i++)sibSvg("path",{d:`M${gx-14+i*9.3},${gy-38}v76`,class:"i-l"},g);
+  label(gx,gy-58,"b_wafsub","m-boxlab");
+  sibSvg("rect",{x:B.ok[0]-24,y:B.ok[1]-9,width:48,height:18,rx:5,class:"m-chip",style:"stroke:var(--ok)"},g);
+  sibSvg("text",{x:B.ok[0],y:B.ok[1]+4,"text-anchor":"middle",class:"m-cap",style:"fill:var(--ok)"},g,"200");
+  label(B.ok[0],B.ok[1]+28,"b_through","m-cap");
+  placeIcon(g,"web",B.web[0],B.web[1],64);label(B.web[0],B.web[1]+50,"b_web");
+  sibSvg("path",{d:B.log,class:"m-atk",style:"stroke:var(--info)"},g);
+  const [sx,sy,sw,sh]=B.soc;
+  sibSvg("rect",{x:sx-sw/2,y:sy-sh/2,width:sw,height:sh,rx:12,class:"m-panel",style:"stroke:var(--high)"},g);
+  label(sx,sy-8,"b_soc","m-lab");
+  sibSvg("text",{x:sx,y:sy+18,"text-anchor":"middle",class:"m-cap",style:"fill:var(--high)"},g,"● "+t("b_d10"));
+  sibSvg("path",{d:B.page,class:"m-atk",style:"stroke:var(--high);stroke-dasharray:none"},g);
+  placeIcon(g,"phone",B.phone[0],B.phone[1],56);label(B.phone[0],B.phone[1]+44,"b_page");
+  const [lx,ly]=innerWidth>700?[450,268]:[222,270];
+  sibSvg("text",{x:lx,y:ly,"text-anchor":innerWidth>700?"middle":"start",class:"m-cap",style:"fill:var(--info)"},g,t("b_log")+" → index=waf");
+}
+
+/* ---------- lightbox ---------- */
+function openShot(btn){
+  const img=$("#lbimg");
+  img.src=btn.dataset.src;
+  img.width=btn.dataset.w;img.height=btn.dataset.h;
+  img.alt=t(btn.dataset.alt);
+  $("#lbcap").textContent=t(btn.dataset.alt);
+  $("#lb").showModal();
+}
+
+/* ---------- language and theme ---------- */
+function renderAll(){
+  renderDepth();renderCompany();renderSteps();renderTimeline();renderQueue();renderInspector();
+  renderPager();renderFindings();renderTaught();renderRoad();drawBridge();
+  if(H.svg){H.mode="";sibLayout()}
+}
+
+function sibSetLang(l){
+  lang=L[l]?l:"en";
+  document.documentElement.lang=lang;
+  document.title=t("doc");
+  document.querySelectorAll("[data-i]").forEach(e=>{e.innerHTML=t(e.dataset.i)});
+  document.querySelectorAll("[data-ia]").forEach(e=>e.setAttribute("aria-label",t(e.dataset.ia)));
+  document.querySelectorAll("#lang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===lang));
+  renderAll();
+  sibStore("sib-lang",lang);
+}
+
+function effectiveTheme(){
+  const set=document.documentElement.dataset.theme;
+  if(set)return set;
+  return matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";
+}
+
+function sibSetTheme(theme){
+  if(theme)document.documentElement.dataset.theme=theme;
+  $("#theme").setAttribute("aria-pressed",effectiveTheme()==="light");
+}
+
+/* ---------- wiring ---------- */
+function bindEvents(){
+  $("#lang").addEventListener("click",e=>{const b=e.target.closest("button");if(b)sibSetLang(b.dataset.l)});
+  $("#theme").addEventListener("click",()=>{
+    const next=effectiveTheme()==="light"?"dark":"light";
+    sibSetTheme(next);
+    sibStore("sib-theme",next);
+  });
+  document.querySelector(".seg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;depth=b.dataset.d;renderDepth()});
+  $("#replay").addEventListener("click",()=>nextAttack(true));
+  $("#qreplay").addEventListener("click",fillQueue);
+  $("#tlprev").addEventListener("click",()=>$("#tl").scrollBy({left:-300,behavior:REDUCE?"auto":"smooth"}));
+  $("#tlnext").addEventListener("click",()=>$("#tl").scrollBy({left:300,behavior:REDUCE?"auto":"smooth"}));
+  $("#queue").addEventListener("click",e=>{const b=e.target.closest("button");if(b)selectAlert(b.dataset.id)});
+  document.addEventListener("click",e=>{
+    const shot=e.target.closest(".shot");
+    if(shot){openShot(shot);return}
+    const copy=e.target.closest(".copy");
+    if(copy)copySpl(copy);
+  });
+  $("#lbx").addEventListener("click",()=>$("#lb").close());
+  $("#lb").addEventListener("click",e=>{if(e.target===e.currentTarget)$("#lb").close()});
+  let resizeTimer;
+  addEventListener("resize",()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{sibLayout();drawBridge()},120)});
+  document.addEventListener("visibilitychange",updateRunning);
+}
+
+function watchSections(){
+  new IntersectionObserver(([e])=>{H.visible=e.isIntersecting;updateRunning()}).observe($(".hero"));
+  const io=new IntersectionObserver(([e],obs)=>{if(!e.isIntersecting)return;obs.disconnect();fillQueue()},{threshold:.2});
+  io.observe($("#console"));
+}
+
+function sibBoot(){
+  const storedTheme=sibStore("sib-theme");
+  sibSetTheme(storedTheme==="light"||storedTheme==="dark"?storedTheme:null);
+  const stored=sibStore("sib-lang");
+  const guess=(navigator.language||"en").toLowerCase().startsWith("es")?"es":"en";
+  if(REDUCE){H.frozen=1;H.idx=2}
+  bindEvents();
+  sibSetLang(stored||guess);
+  sibLayout();
+  watchSections();
+  updateRunning();
+  console.log("⚡ [SOC in a Box] Showcase initialized");
+}
+
+sibBoot();
 </script>
 </body>
 </html>
