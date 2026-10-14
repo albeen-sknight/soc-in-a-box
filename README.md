@@ -2,6 +2,8 @@
 
 I built a tiny company on my PC, put a security operations center next to it, and then broke into my own company to see if I'd catch myself.
 
+**Live showcase:** https://albeen-sknight.github.io/soc-in-a-box/
+
 > **Status:** finished. The company and the SOC are built and running, and all ten detections are done. Nine fire on a real attack and page my phone; the tenth ran into a defense that stops the attack before it even starts, which is a win in its own right. This page is the whole story, start to finish.
 
 ## What this is

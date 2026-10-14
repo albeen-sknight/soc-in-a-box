@@ -1,0 +1,756 @@
+<!-- SOC in a Box · Copyright (c) 2026 Albeen (albeen-sknight) -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="generator" content="SOCinaBox-Showcase">
+<title>SOC in a Box: I broke into my own company to see if I'd catch myself</title>
+<meta name="description" content="A tiny Windows company on one PC, a Splunk SOC next to it, ten ATT&amp;CK mapped detections and a phone that buzzes when I attack myself.">
+<meta name="theme-color" content="#0b0f14">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SOC in a Box">
+<meta property="og:description" content="I built a tiny company on my PC, put a security operations center next to it, and then broke into my own company to see if I'd catch myself.">
+<meta property="og:url" content="https://albeen-sknight.github.io/soc-in-a-box/">
+<meta property="og:image" content="https://albeen-sknight.github.io/soc-in-a-box/screenshots/04-dashboard-first-look.png">
+<meta property="og:image:alt" content="The Limonada S.L. SOC wall screen in Splunk">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SOC in a Box">
+<meta name="twitter:description" content="Ten detections: nine fire on a real attack, seven page my phone.">
+<meta name="twitter:image" content="https://albeen-sknight.github.io/soc-in-a-box/screenshots/04-dashboard-first-look.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0f14'/%3E%3Ccircle cx='32' cy='32' r='21' fill='%23f4e04d'/%3E%3Ccircle cx='32' cy='32' r='16' fill='%23fff7c2'/%3E%3Cg stroke='%23f4e04d' stroke-width='3'%3E%3Cpath d='M32 16v32M16 32h32M20.7 20.7l22.6 22.6M43.3 20.7L20.7 43.3'/%3E%3C/g%3E%3Ccircle cx='32' cy='32' r='3' fill='%23f4e04d'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f14;--bg2:#0f141b;--panel:#131a23;--panel2:#18212c;--line:#273444;--ink:#e8edf2;--mut:#9fadbd;
+  --acc:#f4e04d;--acc-ink:#f4e04d;--on-acc:#14130a;--glow:rgba(244,224,77,.16);
+  --crit:#ff6b6b;--high:#ff9a4d;--med:#f0b84a;--info:#64b0ff;--ok:#4fd1a5;
+  --shot:#05080c;--shadow:0 1px 0 rgba(255,255,255,.03),0 10px 30px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  --bg:#f5f6f1;--bg2:#eceee6;--panel:#ffffff;--panel2:#f2f3ee;--line:#cfd4cc;--ink:#151a21;--mut:#4b5563;
+  --acc:#f4e04d;--acc-ink:#6e6100;--on-acc:#14130a;--glow:rgba(190,170,0,.14);
+  --crit:#c42b2b;--high:#b45309;--med:#8a6100;--info:#1d5fbf;--ok:#0f7a5a;
+  --shot:#0b0f14;--shadow:0 1px 2px rgba(0,0,0,.06),0 8px 24px rgba(20,30,40,.08);
+  color-scheme:light;
+}}
+:root[data-theme="light"]{
+  --bg:#f5f6f1;--bg2:#eceee6;--panel:#ffffff;--panel2:#f2f3ee;--line:#cfd4cc;--ink:#151a21;--mut:#4b5563;
+  --acc:#f4e04d;--acc-ink:#6e6100;--on-acc:#14130a;--glow:rgba(190,170,0,.14);
+  --crit:#c42b2b;--high:#b45309;--med:#8a6100;--info:#1d5fbf;--ok:#0f7a5a;
+  --shot:#0b0f14;--shadow:0 1px 2px rgba(0,0,0,.06),0 8px 24px rgba(20,30,40,.08);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{margin:0;line-height:1.15;font-weight:700;letter-spacing:-.01em}
+a{color:var(--acc-ink)}
+code,pre,.mono{font-family:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,monospace}
+code{font-size:.88em;background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:.05em .35em;white-space:nowrap}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--acc);outline-offset:3px;border-radius:4px}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) :focus-visible{outline-color:var(--acc-ink)}}
+:root[data-theme="light"] :focus-visible{outline-color:var(--acc-ink)}
+.skip{position:absolute;left:12px;top:-60px;background:var(--acc);color:var(--on-acc);padding:10px 14px;z-index:20;font-weight:600}
+.skip:focus{top:12px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* fixed controls, same corner as Pocket Pantheon */
+#ctl{position:fixed;z-index:10;top:calc(12px + env(safe-area-inset-top,0px));right:12px;display:flex;gap:8px}
+#lang,#theme{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+#lang button,#theme{min-width:48px;min-height:44px;border:0;background:transparent;cursor:pointer;font:600 14px "JetBrains Mono",monospace;color:var(--ink)}
+#lang button[aria-pressed="true"]{background:var(--acc);color:var(--on-acc)}
+#theme{align-items:center;justify-content:center}
+#theme svg{width:20px;height:20px}
+
+/* hero */
+.hero{position:relative;min-height:clamp(600px,92vh,900px);overflow:hidden;border-bottom:1px solid var(--line);background:radial-gradient(1200px 600px at 75% 40%,var(--glow),transparent 60%),var(--bg)}
+.hero .grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;opacity:.25;mask-image:radial-gradient(ellipse at 70% 45%,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at 70% 45%,#000 30%,transparent 75%)}
+#map{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hero .t{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:clamp(80px,14vh,140px) 24px 40px;min-height:inherit;display:flex;flex-direction:column;justify-content:center}
+.hero .t>div{max-width:440px}
+.mark{display:inline-flex;align-items:center;gap:10px;font:600 13px "JetBrains Mono",monospace;color:var(--mut);letter-spacing:.06em;text-transform:uppercase;margin-bottom:18px}
+.mark svg{width:26px;height:26px}
+h1{font-size:clamp(46px,7vw,84px);letter-spacing:-.03em}
+h1 span{color:var(--acc-ink)}
+.hook{font-size:clamp(18px,2.1vw,21px);margin:16px 0 24px;color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:12px 14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 18px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-weight:600;font-size:16px;text-decoration:none;cursor:pointer;box-shadow:var(--shadow)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.btn:hover{border-color:var(--acc-ink)}
+.btn.pri:hover{filter:brightness(1.05)}
+.btn:active{transform:translateY(1px)}
+.lnk{display:inline-flex;align-items:center;min-height:44px;font-weight:600}
+.status{margin-top:22px;display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--mut)}
+.status i{flex:none;width:10px;height:10px;border-radius:50%;background:var(--ok);margin-top:7px;box-shadow:0 0 0 4px color-mix(in srgb,var(--ok) 25%,transparent)}
+.maptext{position:absolute;left:auto;right:16px;bottom:12px;font-size:12px;color:var(--mut);z-index:2}
+
+/* sections */
+main section{max-width:1000px;margin:0 auto;padding:72px 20px 8px}
+.kick{font:600 12px "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--acc-ink);margin-bottom:10px}
+h2{font-size:clamp(28px,4.4vw,40px);margin-bottom:12px}
+.lead{max-width:64ch;color:var(--mut);margin:0 0 26px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card h3{font-size:19px;margin-bottom:6px}
+.card p{margin:0;color:var(--mut);font-size:15.5px}
+
+/* simple / technical */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);margin-bottom:16px}
+.seg button{min-height:44px;padding:0 16px;border:0;background:transparent;cursor:pointer;font-weight:600;color:var(--mut)}
+.seg button[aria-pressed="true"]{background:var(--acc);color:var(--on-acc)}
+.depth{font-size:clamp(18px,2.2vw,21px);max-width:62ch;margin:0;min-height:7.5em}
+
+/* company */
+.co{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.co .card{display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:start}
+.co svg{width:64px;height:64px}
+.co h3{font-family:"JetBrains Mono",monospace;font-size:17px}
+.where{display:inline-block;margin-top:8px;font:600 12px "JetBrains Mono",monospace;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:2px 10px}
+.note{margin-top:18px;padding:14px 18px;border-left:3px solid var(--acc);background:var(--panel);border-radius:0 10px 10px 0;max-width:72ch}
+
+/* steps with screenshots */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:s}
+.step{display:flex;flex-direction:column;gap:10px}
+.step p{margin:0;font-size:15px;color:var(--mut)}
+.step b{display:block;font:600 12px "JetBrains Mono",monospace;color:var(--acc-ink)}
+.shot{display:block;width:100%;padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--shot);cursor:zoom-in;line-height:0}
+.shot img{width:100%;height:auto;display:block;aspect-ratio:auto}
+.steps .shot img{height:130px;object-fit:cover;object-position:left top}
+.shot:hover{border-color:var(--acc-ink)}
+
+/* console */
+.console{display:grid;grid-template-columns:330px 1fr;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel);box-shadow:var(--shadow)}
+.cbar{grid-column:1/-1;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--panel2);font:600 13px "JetBrains Mono",monospace;color:var(--mut)}
+.cbar .live{display:inline-flex;align-items:center;gap:8px}
+.cbar .live i{width:8px;height:8px;border-radius:50%;background:var(--ok)}
+.cbar .sp{flex:1}
+.cbar .btn{min-height:44px;font-size:14px;padding:6px 12px}
+.queue{border-right:1px solid var(--line);max-height:720px;overflow:auto;margin:0;padding:0;list-style:none}
+.queue li{border-bottom:1px solid var(--line)}
+.queue button{display:grid;grid-template-columns:44px 1fr auto;gap:2px 10px;width:100%;text-align:left;background:transparent;border:0;border-left:3px solid transparent;padding:12px 12px 12px 11px;cursor:pointer;min-height:64px}
+.queue button:hover{background:var(--panel2)}
+.queue button[aria-pressed="true"]{background:var(--panel2);border-left-color:var(--acc)}
+.queue .tm{grid-row:1/3;font:600 12px "JetBrains Mono",monospace;color:var(--mut);padding-top:2px}
+.queue .nm{font-weight:600;font-size:14.5px;line-height:1.3}
+.queue .nm span{font-family:"JetBrains Mono",monospace;color:var(--acc-ink);margin-right:6px}
+.queue .hs{grid-column:2;font:12px "JetBrains Mono",monospace;color:var(--mut)}
+.queue .sv{grid-row:1/3;grid-column:3;align-self:center}
+.queue li.new{animation:slidein .45s ease-out}
+@keyframes slidein{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+.chip{display:inline-flex;align-items:center;gap:6px;font:600 11.5px "JetBrains Mono",monospace;letter-spacing:.02em;border-radius:999px;padding:3px 9px;border:1px solid currentColor;white-space:nowrap}
+.chip:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.sev-crit{color:var(--crit)}.sev-high{color:var(--high)}.sev-med{color:var(--med)}.sev-info{color:var(--info)}
+.st{display:inline-flex;font:600 11.5px "JetBrains Mono",monospace;border-radius:6px;padding:3px 8px;white-space:nowrap}
+.st-paged{background:var(--acc);color:var(--on-acc)}
+.st-fires{border:1px solid var(--line);color:var(--ink)}
+.st-blocked{border:1px solid var(--ok);color:var(--ok)}
+.insp{padding:20px 22px 24px;min-width:0}
+.insp header{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:6px}
+.insp header h3{font-size:22px;flex-basis:100%}
+.insp header .id{font:600 14px "JetBrains Mono",monospace;color:var(--acc-ink)}
+.insp header a{font:600 13px "JetBrains Mono",monospace}
+.chain{list-style:none;margin:16px 0 0;padding:0;counter-reset:c}
+.chain>li{position:relative;padding:0 0 22px 40px}
+.chain>li:before{counter-increment:c;content:counter(c);position:absolute;left:0;top:0;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--panel2);border:1px solid var(--line);font:600 12px "JetBrains Mono",monospace;color:var(--acc-ink)}
+.chain>li:after{content:"";position:absolute;left:13px;top:30px;bottom:4px;width:1px;background:var(--line)}
+.chain>li:last-child:after{display:none}
+.chain h4{margin:2px 0 8px;font-size:13px;font-family:"JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+.chain p{margin:0 0 8px;font-size:15.5px}
+.logs{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.logs li{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font-size:14.5px}
+.logs code{white-space:normal}
+pre{margin:0;max-width:100%;overflow:auto;background:var(--shot);color:#dce3ea;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:12.8px;line-height:1.6;tab-size:2}
+.cmd pre{border-left:3px solid var(--acc)}
+.codewrap{position:relative}
+.copy{position:absolute;top:8px;right:8px;min-height:36px;min-width:64px;font:600 12px "JetBrains Mono",monospace;border-radius:8px;border:1px solid #33424f;background:#121a22;color:#dce3ea;cursor:pointer}
+.copy:hover{border-color:var(--acc)}
+.k{color:#f4e04d}.f{color:#7cc4ff}.s{color:#9be28c}.o{color:#ff9fd1}.p{color:#8899aa}
+.result{font:13px/1.6 "JetBrains Mono",monospace;background:var(--panel2);border:1px dashed var(--line);border-radius:10px;padding:10px 14px;overflow-wrap:anywhere}
+.result.defense{border-color:var(--ok);color:var(--ink)}
+.chain .shot{margin-top:8px}
+.chain .shot+.shot{margin-top:10px}
+figure{margin:0}
+figcaption{font-size:13px;color:var(--mut);margin-top:6px}
+
+/* phone */
+.phone{width:min(300px,100%);border-radius:34px;padding:12px;background:#0a0d11;border:1px solid #2a333d;box-shadow:inset 0 0 0 2px #151b22,var(--shadow);position:relative}
+.phone:before{content:"";display:block;width:84px;height:20px;border-radius:12px;background:#000;margin:0 auto 8px}
+.phone .scr{border-radius:24px;background:linear-gradient(#1b2229,#11161b);padding:12px 10px;min-height:120px;display:grid;gap:10px;align-content:start}
+.ntf{background:#2a3036;color:#e6e9ec;border-radius:16px;padding:10px 12px;font-size:12.5px;line-height:1.45}
+.ntf .app{display:flex;align-items:center;gap:8px;font-size:11.5px;color:#aab3bb;margin-bottom:4px}
+.ntf .app i{width:18px;height:18px;border-radius:50%;background:#2ecc40;display:grid;place-items:center;color:#06210b;font:700 9px "JetBrains Mono",monospace;font-style:normal}
+.ntf b{display:block;font-size:13.5px;margin-bottom:3px;color:#fff}
+.ntf .ln{font-family:"JetBrains Mono",monospace;font-size:11px;color:#c9d0d6;overflow-wrap:anywhere}
+.ntf.quiet{background:transparent;border:1px dashed #3a444e;color:#aab3bb;text-align:center;padding:16px}
+.phone.buzz{animation:buzz .5s linear}
+@keyframes buzz{0%,100%{transform:none}20%{transform:translateX(-3px) rotate(-1deg)}40%{transform:translateX(3px) rotate(1deg)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
+
+/* timeline */
+.tl{overflow-x:auto;padding:6px 2px 18px;scroll-snap-type:x proximity}
+.tl:focus-visible{outline-offset:-3px}
+.tl-in{display:flex;gap:18px;width:max-content}
+.grp{display:flex;flex-direction:column;gap:12px}
+.grp h3{font:600 13px "JetBrains Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);padding:0 0 10px;border-bottom:2px solid var(--line);position:relative}
+.grp h3:after{content:"";position:absolute;left:0;bottom:-6px;width:10px;height:10px;border-radius:50%;background:var(--acc)}
+.grp .cards{display:flex;gap:12px}
+.dc{width:270px;scroll-snap-align:start;display:flex;flex-direction:column;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}
+.dc .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dc .id{font:600 15px "JetBrains Mono",monospace;color:var(--acc-ink)}
+.dc h4{margin:0;font-size:17px;line-height:1.25}
+.dc p{margin:0;font-size:14.5px;color:var(--mut)}
+.dc .ft{margin-top:auto;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font:600 12.5px "JetBrains Mono",monospace}
+.dc .ft a{min-height:32px;display:inline-flex;align-items:center}
+.dc.d06{width:420px;border-color:var(--ok);background:linear-gradient(160deg,color-mix(in srgb,var(--ok) 10%,var(--panel)),var(--panel) 60%)}
+.ladder{list-style:none;margin:4px 0;padding:0;display:grid;gap:6px;font-size:14px}
+.ladder li{display:flex;gap:10px;align-items:center}
+.ladder li b{font:600 11px "JetBrains Mono",monospace;padding:2px 8px;border-radius:6px;border:1px solid var(--mut);color:var(--mut);flex:none}
+.ladder li.win b{border-color:var(--ok);color:var(--ok)}
+
+/* pager */
+.pager{display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:start}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 18px;padding:0;list-style:none}
+.flow li{display:flex;align-items:center;gap:10px}
+.flow li span{font:600 13px "JetBrains Mono",monospace;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.flow li+li:before{content:"";width:22px;height:2px;background:var(--acc)}
+.secret{letter-spacing:.1em;color:var(--mut)}
+
+/* findings */
+.find .card{position:relative;padding-top:22px}
+.find .card:before{content:"";position:absolute;left:18px;right:18px;top:0;height:3px;background:var(--acc);border-radius:0 0 3px 3px}
+.find .from{display:block;margin-top:12px;font:600 12px "JetBrains Mono",monospace;color:var(--acc-ink)}
+.find h3{font-size:18px}
+
+/* learning */
+.tutor{display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:center;margin-bottom:22px}
+.tutor svg{width:100%;height:auto}
+.tutor p{margin:0 0 12px}
+.closing{font-size:clamp(18px,2.2vw,21px);max-width:62ch;margin:24px 0 0;border-left:3px solid var(--acc);padding-left:16px}
+
+/* bridge */
+.bridge svg{width:100%;height:auto;display:block}
+.bridge .card{padding:10px}
+
+/* roadmap */
+.road{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.road li{display:grid;grid-template-columns:36px 1fr auto;gap:14px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.road .n{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);font:600 13px "JetBrains Mono",monospace;color:var(--mut)}
+.road li.done .n{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.road h3{font-size:17px;margin-bottom:2px}
+.road p{margin:0;color:var(--mut);font-size:15px}
+.rs{font:600 12px "JetBrains Mono",monospace;border-radius:999px;padding:4px 10px;border:1px solid var(--line);color:var(--mut)}
+.rs.done{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
+.limits{margin-top:28px}
+.limits h3{font-size:20px;margin-bottom:8px}
+.limits p{margin:0;max-width:70ch}
+
+/* about + footer */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.about p{margin:0 0 12px}
+.more{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.more a{display:block;text-decoration:none;color:var(--ink)}
+.more a:hover .card{border-color:var(--acc-ink)}
+.more .card b{display:block;font-size:17px;margin-bottom:4px}
+.more .card span{font:600 12px "JetBrains Mono",monospace;color:var(--acc-ink)}
+footer{max-width:1000px;margin:72px auto 0;padding:28px 20px calc(36px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);color:var(--mut);font-size:15px}
+footer .row{margin-top:10px}
+footer a{min-height:44px;display:inline-flex;align-items:center}
+
+/* lightbox */
+dialog{border:1px solid var(--line);border-radius:14px;padding:0;background:var(--panel);color:var(--ink);max-width:min(1200px,96vw);max-height:92vh;overflow:auto}
+dialog::backdrop{background:rgba(3,6,10,.82)}
+dialog img{display:block;max-width:100%;height:auto;background:var(--shot)}
+dialog .bar{display:flex;align-items:center;gap:12px;padding:8px 8px 8px 16px;font-size:14px;color:var(--mut)}
+dialog .bar span{flex:1}
+dialog .bar button{min-width:44px;min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);cursor:pointer;font-size:20px;line-height:1}
+
+@media (max-width:900px){
+  .hero{min-height:0}
+  #map{position:relative;height:auto;aspect-ratio:600/700}
+  .hero .t{padding:84px 16px 8px;min-height:0}
+  .hero .t>div{max-width:none}
+  .maptext{position:static;display:block;padding:0 16px 14px}
+  .console{grid-template-columns:1fr}
+  .queue{border-right:0;border-bottom:1px solid var(--line);max-height:300px}
+  .steps{grid-template-columns:1fr 1fr}
+  .pager{grid-template-columns:1fr}
+  .pager .phone{margin:0 auto}
+  .tutor{grid-template-columns:1fr}
+  .tutor svg{max-width:320px}
+  .about{grid-template-columns:1fr}
+}
+@media (max-width:700px){
+  body{font-size:16px}
+  main section{padding:56px 16px 4px}
+  footer{padding-left:16px;padding-right:16px}
+  .tl{overflow:visible;padding:0}
+  .tl-in{flex-direction:column;width:auto;gap:26px}
+  .grp .cards{flex-direction:column}
+  .dc,.dc.d06{width:auto}
+  .steps{grid-template-columns:1fr}
+  .steps .shot img{height:auto}
+  .insp{padding:16px}
+  .road li{grid-template-columns:32px 1fr;}
+  .road .rs{grid-column:2;justify-self:start}
+  .co .card{grid-template-columns:48px 1fr}
+  .co svg{width:48px;height:48px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*:before,*:after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#story" data-i="skip">Skip to the story</a>
+
+<div id="ctl">
+  <button id="theme" type="button" data-ia="theme" aria-label="Switch theme"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/><circle cx="12" cy="12" r="4.5" fill="currentColor"/></svg></button>
+  <div id="lang" role="group" data-ia="lang" aria-label="Language"><button type="button" data-l="en" aria-pressed="true">EN</button><button type="button" data-l="es" aria-pressed="false">ES</button></div>
+</div>
+
+<header class="hero" id="top">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <svg id="map" role="img" aria-labelledby="map-t map-d"><title id="map-t" data-i="map_t">Live map of Limonada S.L. and its SOC</title><desc id="map-d" data-i="map_d">A dashed boundary holds the lab network with DC01, WS01, WS02 and WEB01, and the attacker at its edge. Outside it sit the SOC, Splunk in Docker, and a phone. Small log dots flow from every machine to the SOC. Every few seconds an attack plays: a machine flashes, its detection ID appears, an alert races to the SOC in its severity colour and, for High and Critical detections, the phone buzzes.</desc></svg>
+  <div class="t">
+    <div>
+      <div class="mark"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="#f4e04d"/><circle cx="16" cy="16" r="9.5" fill="#fff7c2"/><path d="M16 6.5v19M6.5 16h19M9.3 9.3l13.4 13.4M22.7 9.3L9.3 22.7" stroke="#f4e04d" stroke-width="1.8"/></svg>Limonada S.L. · SOC</div>
+      <h1>SOC <span>in a Box</span></h1>
+      <p class="hook" data-i="hook">I built a tiny company on my PC, put a security operations center next to it, and then broke into my own company to see if I'd catch myself.</p>
+      <div class="row">
+        <a class="btn pri" href="#story" data-i="read">Read the story</a>
+        <button class="btn" id="replay" type="button" data-i="replay">Replay an attack</button>
+        <a class="lnk" href="https://github.com/albeen-sknight/soc-in-a-box" data-i="gh">View on GitHub</a>
+      </div>
+      <p class="status"><i aria-hidden="true"></i><span data-i="status">Finished. Ten detections: nine fire on a real attack, seven page my phone.</span></p>
+    </div>
+  </div>
+  <p class="maptext" id="maplive" aria-live="polite"></p>
+</header>
+
+<main>
+<section id="story" aria-labelledby="h-what">
+  <p class="kick" data-i="k_what">What it is</p>
+  <h2 id="h-what" data-i="what_h">Two ways to say it</h2>
+  <div class="seg" role="group" data-ia="depth"><button type="button" data-d="simple" aria-pressed="true" data-i="simple">Simple</button><button type="button" data-d="tech" aria-pressed="false" data-i="tech">Technical</button></div>
+  <p class="depth" id="depth" aria-live="polite"></p>
+</section>
+
+<section aria-labelledby="h-co">
+  <p class="kick" data-i="k_co">The company</p>
+  <h2 id="h-co" data-i="co_h">Limonada S.L.</h2>
+  <p class="lead" data-i="co_p">A made up juice distributor with 40 staff. It's the same company that runs the web shop I protected in my WAF project, so the two projects tell one story.</p>
+  <div class="co" id="co"></div>
+  <p class="note" data-i="co_note">The company lives on a private VMware network and the SOC lives outside it, in Docker. That's how a managed SOC works in real life too: it sits outside the client's network and the logs travel to it.</p>
+</section>
+
+<section aria-labelledby="h-up">
+  <p class="kick" data-i="k_up">Phase one</p>
+  <h2 id="h-up" data-i="up_h">The SOC comes up</h2>
+  <p class="lead" data-i="up_p">Think of the SOC as a warehouse that only takes in deliveries once it has the right loading bays. First I needed somewhere for the logs to land.</p>
+  <ol class="steps" id="steps"></ol>
+</section>
+
+<section aria-labelledby="h-chair">
+  <p class="kick" data-i="k_chair">The centrepiece</p>
+  <h2 id="h-chair" data-i="chair_h">Sit in the analyst's chair</h2>
+  <p class="lead" data-i="chair_p">These are the real alerts from my own attacks. Pick one and follow it from the command I typed to the buzz on my phone.</p>
+  <div class="console" id="console">
+    <div class="cbar"><span class="live"><i aria-hidden="true"></i><span data-i="queue">Alert queue</span></span><span class="sp"></span><span id="qcount"></span><button class="btn" id="qreplay" type="button" data-i="qreplay">Replay the shift</button></div>
+    <ul class="queue" id="queue" data-ia="queue_l" aria-label="Alerts"></ul>
+    <div class="insp" id="insp" aria-live="polite"></div>
+  </div>
+</section>
+
+<section aria-labelledby="h-ten">
+  <p class="kick" data-i="k_ten">The ten detections</p>
+  <h2 id="h-ten" data-i="ten_h">In the order an intruder trips them</h2>
+  <p class="lead" data-i="ten_p">Each detection is a saved SPL search that runs every minute over the last fifteen, mapped to a MITRE ATT&amp;CK technique. The serious ones page my phone. The quieter ones sit on the dashboard as context, so the pager stays meaningful.</p>
+  <div class="tl" id="tl" tabindex="0" role="region" data-ia="tl_l" aria-label="Detection timeline"></div>
+</section>
+
+<section aria-labelledby="h-pager">
+  <p class="kick" data-i="k_pager">The pager</p>
+  <h2 id="h-pager" data-i="pager_h">Alerts are no use if I'm not staring at the screen</h2>
+  <div class="pager">
+    <div class="phone" id="pphone"><div class="scr" id="pscreen"></div></div>
+    <div>
+      <ol class="flow"><li><span data-i="fl1">Splunk alert</span></li><li><span>relay.py</span></li><li><span><span data-i="fl3">private ntfy topic</span> <span class="secret" aria-hidden="true">••••••</span></span></li><li><span data-i="fl4">my phone</span></li></ol>
+      <p data-i="pager_p1">A Splunk alert calls a small relay I wrote, which forwards it to a private ntfy topic that my phone is subscribed to. The topic name is a secret kept out of the repo, so nobody else can read my alerts.</p>
+      <p data-i="pager_p2">Only High and Critical page. Medium detections stay on the dashboard, because a pager that cries wolf gets ignored, and that is a real way a SOC fails.</p>
+      <p class="note" data-i="pager_p3">Why a relay and not Splunk straight to ntfy: the topic works like a password. With the relay it lives only in <code>.env</code>, which Git ignores, instead of in <code>savedsearches.conf</code>.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="h-find">
+  <p class="kick" data-i="k_find">What I found</p>
+  <h2 id="h-find" data-i="find_h">The part I'd talk about in an interview</h2>
+  <p class="lead" data-i="find_p">The detections are the point, but the findings along the way are what I'd actually talk about.</p>
+  <div class="grid g2 find" id="find"></div>
+</section>
+
+<section aria-labelledby="h-learn">
+  <p class="kick" data-i="k_learn">How I learned it</p>
+  <h2 id="h-learn" data-i="learn_h">A driving instructor with dual controls</h2>
+  <div class="tutor">
+    <div>
+      <p data-i="learn_p1">I'm still learning, so I built this the way a lot of people learn now: with Claude Code, an AI coding assistant, as my tutor. It helped me script the lab, the domain build, the configs and the first drafts of the detections.</p>
+      <p data-i="learn_p2">I used it to learn the job, not to skip it: I ran Limonada S.L. on my own machines, ran every attack, debugged every detection that came back empty, and worked out the findings myself.</p>
+      <p data-i="learn_p3">Think of a driving instructor with dual controls. The instructor helped get the car on the road; I'm the one learning to drive it.</p>
+    </div>
+    <svg viewBox="0 0 280 200" role="img" aria-labelledby="car-t"><title id="car-t" data-i="car_t">A learner car seen from above, with two steering wheels and two sets of pedals</title>
+      <rect x="40" y="20" width="200" height="160" rx="44" fill="var(--panel)" stroke="var(--line)" stroke-width="2"/>
+      <rect x="60" y="36" width="160" height="34" rx="10" fill="var(--panel2)" stroke="var(--line)"/>
+      <circle cx="105" cy="105" r="22" fill="none" stroke="var(--acc)" stroke-width="5"/><path d="M83 105h44M105 105v22" stroke="var(--acc)" stroke-width="4"/>
+      <circle cx="175" cy="105" r="22" fill="none" stroke="var(--mut)" stroke-width="5"/><path d="M153 105h44M175 105v22" stroke="var(--mut)" stroke-width="4"/>
+      <rect x="92" y="140" width="10" height="20" rx="3" fill="var(--acc)"/><rect x="108" y="140" width="10" height="20" rx="3" fill="var(--acc)"/>
+      <rect x="162" y="140" width="10" height="20" rx="3" fill="var(--mut)"/><rect x="178" y="140" width="10" height="20" rx="3" fill="var(--mut)"/>
+      <text x="105" y="192" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="600" fill="var(--acc-ink)" data-i="car_me">me</text>
+      <text x="175" y="192" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="600" fill="var(--mut)" data-i="car_tutor">tutor</text>
+    </svg>
+  </div>
+  <h3 class="kick" data-i="taught_h">What this taught me</h3>
+  <div class="grid g3" id="taught"></div>
+  <p class="closing" data-i="closing">This doesn't make me a finished analyst. It makes me someone who has done the work with their own hands and can talk through every piece of it, which is where I want to be starting from.</p>
+</section>
+
+<section class="bridge" aria-labelledby="h-bridge">
+  <p class="kick" data-i="k_bridge">One company, two projects</p>
+  <h2 id="h-bridge" data-i="bridge_h">The firewall blocks the attack, the SIEM notices the pattern</h2>
+  <p class="lead" data-i="bridge_p">WEB01 is WAF Flight Recorder, a web application firewall I deployed, attacked and tuned myself. Its log flows into this SOC, and D10 watches for many blocks from one source on one page, then a success on that same page.</p>
+  <div class="card"><svg id="bridge" viewBox="0 0 960 300" role="img" aria-labelledby="br-t"><title id="br-t" data-i="br_t">An attacker hammers a form on WEB01. The WAF blocks six tries, the seventh gets a 200. The WAF log reaches the SOC, D10 fires and the phone buzzes.</title></svg></div>
+  <div class="row" style="margin-top:18px"><a class="btn pri" href="https://albeen-sknight.github.io/waf-flight-recorder/" data-i="see_waf">See the WAF project</a><a class="lnk" href="https://github.com/albeen-sknight/waf-flight-recorder" data-i="waf_repo">WAF Flight Recorder on GitHub</a></div>
+</section>
+
+<section aria-labelledby="h-next">
+  <p class="kick" data-i="k_next">What's next</p>
+  <h2 id="h-next" data-i="next_h">The road is already mapped</h2>
+  <p class="lead" data-i="next_p">The ten detections are the heart of this, and they're done. None of what follows changes the core, which is here and working today.</p>
+  <ol class="road" id="road"></ol>
+  <div class="limits card">
+    <h3 data-i="lim_h">Limits</h3>
+    <p data-i="lim_p">This is a training lab for one analyst, not real security for a real company. It's a handful of virtual machines on one PC, not a hardened network, and the SOC is one person working by hand, not Splunk Enterprise Security or a 24/7 team. The worth of it is in the building and the understanding, not in the scale.</p>
+  </div>
+</section>
+
+<section aria-labelledby="h-me">
+  <p class="kick" data-i="k_me">About me</p>
+  <h2 id="h-me" data-i="me_h">I'm Albeen</h2>
+  <div class="about">
+    <div>
+      <p data-i="me_p1">I'm studying network systems administration and I want to start my career as a SOC analyst. Before this I did a CyberSOC trainee program and guided Elastic and Kibana labs.</p>
+      <p data-i="me_p2">The trouble with guided labs is that someone else has already built the company, planted the attack and handed you the clean logs. You end up practising how to read the answer, not how to find it. So I built the whole thing myself.</p>
+    </div>
+    <div>
+      <p data-i="me_p3">The point was never to collect ten working searches. It was to understand the whole chain, from the command an attacker types, to the log line it leaves, to the alert on my phone, so I can explain any piece of it out loud.</p>
+      <p class="row"><a class="lnk" href="https://github.com/albeen-sknight" data-i="profile">My GitHub profile</a><a class="lnk" href="https://github.com/albeen-sknight/soc-in-a-box" data-i="this_repo">This repository</a></p>
+    </div>
+  </div>
+  <h3 class="kick" style="margin-top:24px" data-i="more_h">More projects</h3>
+  <div class="more">
+    <a href="https://albeen-sknight.github.io/waf-flight-recorder/"><div class="card"><b>WAF Flight Recorder</b><p data-i="more_waf">A web application firewall I deployed, attacked and tuned myself. It is WEB01, the web shop in this lab.</p><span data-i="visit">Visit the page</span></div></a>
+    <a href="https://albeen-sknight.github.io/pocket-pantheon/"><div class="card"><b>Pocket Pantheon</b><p data-i="more_pp">A tiny pixel world that lives on its own, until you decide it shouldn't.</p><span data-i="visit">Visit the page</span></div></a>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p data-i="foot">Every name in this lab is made up. No real IP addresses or usernames appear on this page.</p>
+  <div class="row"><a href="https://github.com/albeen-sknight" data-i="f_gh">GitHub profile</a><a href="https://github.com/albeen-sknight/soc-in-a-box" data-i="f_repo">SOC in a Box on GitHub</a><a href="https://albeen-sknight.github.io/waf-flight-recorder/">WAF Flight Recorder</a><a href="https://albeen-sknight.github.io/pocket-pantheon/">Pocket Pantheon</a></div>
+</footer>
+
+<dialog id="lb" aria-labelledby="lbcap"><div class="bar"><span id="lbcap"></span><button type="button" id="lbx" data-ia="close" aria-label="Close">×</button></div><img id="lbimg" alt="" src="data:," width="1" height="1"></dialog>
+
+<script>
+const L={
+en:{
+doc:"SOC in a Box: I broke into my own company to see if I'd catch myself",
+skip:"Skip to the story",theme_l:"Switch to light theme",theme_d:"Switch to dark theme",lang:"Language",close:"Close",
+map_t:"Live map of Limonada S.L. and its SOC",
+map_d:"A dashed boundary holds the lab network with DC01, WS01, WS02 and WEB01, and the attacker at its edge. Outside it sit the SOC, Splunk in Docker, and a phone. Small log dots flow from every machine to the SOC. Every few seconds an attack plays: a machine flashes, its detection ID appears, an alert races to the SOC in its severity colour and, for High and Critical detections, the phone buzzes.",
+hook:"I built a tiny company on my PC, put a security operations center next to it, and then broke into my own company to see if I'd catch myself.",
+read:"Read the story",replay:"Replay an attack",gh:"View on GitHub",
+status:"Finished. Ten detections: nine fire on a real attack, seven page my phone.",
+lab_net:"Limonada S.L. lab network",att_lbl:"Attacker",soc_lbl:"The SOC",soc_sub:"Splunk in Docker",phone_lbl:"my phone",
+blocked_lbl:"Blocked upstream: RunAsPPL = 2",nopage_lbl:"Medium: dashboard only, no page",
+live_paged:"{id} on {host}: {sev}, paged my phone.",live_quiet:"{id} on {host}: {sev}, on the dashboard, no page.",live_blocked:"{id} on {host}: blocked by the operating system before any log.",
+k_what:"What it is",what_h:"Two ways to say it",depth:"Choose the depth",simple:"Simple",tech:"Technical",
+simple_p:"Picture a small office with a server that checks everyone's logins, a couple of staff laptops and a web shop. Every one of them sends a note to a camera room each time something happens. I sit in the camera room. Then I play the burglar, break in a few different ways, and try to catch myself the way a SOC analyst would on a real shift.",
+tech_p:"A Windows Server domain controller, two Windows 11 workstations and a web server with a WAF run on my PC. Their Windows Security, Sysmon, PowerShell and ModSecurity logs leave the lab network and travel to Splunk Enterprise, which runs in Docker on the same PC but outside the company's network. I run techniques mapped to MITRE ATT&amp;CK against the lab, my SPL detections raise alerts that buzz my phone, and I work every alert the way a junior analyst would.",
+k_co:"The company",co_h:"Limonada S.L.",
+co_p:"A made up juice distributor with 40 staff. It's the same company that runs the web shop I protected in my WAF project, so the two projects tell one story.",
+co_note:"The company lives on a private VMware network and the SOC lives outside it, in Docker. That's how a managed SOC works in real life too: it sits outside the client's network and the logs travel to it.",
+c_dc_n:"DC01",c_dc_w:"Windows Server 2025, the domain controller for <code>limonada.local</code>. Every login in the company gets checked here.",
+c_ws_n:"WS01, WS02",c_ws_w:"Windows 11 Enterprise staff workstations: Lucia Navarro's PC in Finance and Carmen Vidal's in Sales.",
+c_web_n:"WEB01",c_web_w:"The web shop behind the WAF from my last project.",
+c_att_n:"Attacker",c_att_w:"The uninvited guest, aimed only at lab machines.",
+c_soc_n:"The SOC",c_soc_w:"Splunk and the alert relay in Docker, outside the lab network.",
+c_pager_n:"The pager",c_pager_w:"Alerts arrive as phone notifications.",
+on_pc:"Lives on the PC",on_phone:"Lives on my phone",
+k_up:"Phase one",up_h:"The SOC comes up",
+up_p:"Think of the SOC as a warehouse that only takes in deliveries once it has the right loading bays. First I needed somewhere for the logs to land.",
+step:"Step",
+s1:"Splunk runs in Docker on my PC, with four buckets ready: one for Windows events, one for Sysmon, one for the web shop, one spare for Linux.",
+s2:"Raw Windows events are a wall of numbers, so Splunk needs two small apps to make sense of them. Here they are, installed.",
+s3:"Once the machines had their forwarders, the events started arriving on their own, from the domain controller and both workstations: about 33,000 in the first hour.",
+s4:"This is the screen I look at when I sit down: failed logins, admin changes, WAF blocks, all in one place.",
+alt01:"Splunk's four indexes",alt02:"The Windows and Sysmon apps installed",alt03:"Logs arriving from the lab machines",alt04:"The SOC dashboard",
+alt05:"D10 in Triggered Alerts",alt08:"Triggered Alerts with D01 at the top",alt11:"D02 firing in Splunk",alt13:"D05 catching the encoded and hidden tests",alt14:"Why the first version missed: the script text was in Message",
+open_shot:"Open the screenshot",
+k_chair:"The centrepiece",chair_h:"Sit in the analyst's chair",
+chair_p:"These are the alerts from my own attacks. Pick one and follow it from what I typed to the buzz on my phone.",
+queue:"Alert queue",queue_l:"Alerts, pick one to inspect",qreplay:"Replay the shift",qcount:"{n} of 10 in the queue",
+ch1:"What the attacker did",ch2:"The log it left",ch3:"The search",ch4:"The alert",ch5:"The page",
+copy:"Copy",copied:"Copied",writeup:"Full write up",no_alert:"no alert",
+res_lbl:"No screenshot of this one in Splunk. The result row from my test:",
+pg_med:"Medium: no page. It shows in Triggered Alerts and on the dashboard, so the phone only buzzes for things worth standing up for.",
+pg_d06:"Would page at Critical. There was nothing to page: the operating system stopped the attempt before it could leave a trace.",
+pg_d08:"Redrawn from the alert's fields. My screenshot of this page was cropped.",
+alert_at:"Alert fired at {t} on 8 Oct 2026",
+ev4625:"failed logon",ev4624:"successful logon",ev4771:"Kerberos failure on DC01, status <code>0x18</code> (bad password)",ev4728:"member added to a global group (Domain Admins)",ev4732:"member added to a local group (Administrators)",ev4756:"member added to a universal group (Enterprise Admins)",ev4720:"user account created",ev4104:"PowerShell script block text, read from <code>Message</code>",ev4688:"process created, command line in <code>Process_Command_Line</code>",evs10:"process access, target <code>lsass.exe</code>",ev4698:"scheduled task created",ev1102:"Security log cleared, and who did it",evs1:"process created, with its parent",evwaf:"blocks with status 403, then a 2xx or 3xx on the same page",
+sev_crit:"Critical",sev_high:"High",sev_med:"Medium",
+st_paged:"Fires, paged",st_fires:"Fires",st_blocked:"Built, blocked by a defense",
+D01_n:"Many failed logons then a success",D01_s:"Brute force",
+D02_n:"Password spray from one source",D02_s:"Password spray",
+D03_n:"Added to a privileged group",D03_s:"Added to admins",
+D04_n:"New local account created",D04_s:"New local account",
+D05_n:"Encoded or hidden PowerShell",D05_s:"Hidden PowerShell",
+D06_n:"A process opening LSASS memory",D06_s:"LSASS access",
+D07_n:"New scheduled task",D07_s:"Scheduled task",
+D08_n:"Security log cleared",D08_s:"Log cleared",
+D09_n:"Office starting a shell",D09_s:"Office spawns shell",
+D10_n:"WAF blocks then a success",D10_s:"WAF blocks, then 200",
+D01_did:"At WS01's login screen I typed the wrong password for the domain account <code>lucia.navarro</code> again and again, then the right one. She never got locked out. DC01 and WS01 both logged it, because DC01 checks domain passwords.",
+D02_did:"From WS01, as a normal user, I ran a <code>net use</code> loop against DC01: 15 made up usernames, one password, each one failing on purpose. That's 15 failed logons from one source in a few seconds, well over the threshold of 10.",
+D03_did:"On WS02, as the local admin <code>labadmin</code>, I created a local account and added it to Administrators.",
+D04_did:"On WS02, as <code>labadmin</code>, I created a brand new local account called <code>helpdesk.temp</code>.",
+D05_did:"Three PowerShell commands on WS01: one <code>-EncodedCommand</code>, one <code>-WindowStyle Hidden</code> and one inline <code>FromBase64String</code>. This is the hidden window one, the alert that reached my phone.",
+D06_did:"A small PowerShell test that asks Windows for a read handle to LSASS with <code>0x1010</code>, the exact access a dumper needs, without reading a single byte. Denied. Elevated: denied. Elevated with the debug privilege dumpers rely on: still denied.",
+D07_did:"On WS02, as <code>labadmin</code>, I created a scheduled task that runs Notepad once.",
+D08_did:"On WS02, as <code>labadmin</code>, after creating the D03, D04 and D07 test events and waiting a minute, I wiped the Security log.",
+D09_did:"Office isn't installed on these machines, so I proved the logic with a stand in: I copied <code>cmd.exe</code> to a file named <code>winword.exe</code> and had it spawn a shell.",
+D10_did:"I sent six SQL injections to <code>/rest/products/search</code> on the web shop, then one normal search for <code>apple</code>.",
+D03_res:"One new row: <code>WS02</code>, <code>labadmin</code> to <code>Administrators</code>, member SID ending in <code>1002</code>, a new local account.",
+D04_res:"One row: <code>WS02</code>, <code>labadmin</code> created <code>helpdesk.temp</code>. The raw search had 49 rows; with the filters, it's 1.",
+D06_res:"No alert. The denied opens never produced a Sysmon event 10, so the gate stayed at 0 events after every attempt. The registry said why: <code>RunAsPPL = 2</code>.",
+D07_res:"One row: <code>WS02</code>, <code>labadmin</code>, <code>\\LimonadaUpdate</code>. No Windows tasks, no OneDrive rows.",
+D08_res:"One row: <code>WS02</code>, <code>labadmin</code>. Splunk still held every event WS02 had sent before the wipe.",
+D09_res:"One row: <code>WS01</code>, <code>labadmin</code>, parent <code>c:\\users\\public\\d09test\\winword.exe</code>, child <code>c:\\windows\\system32\\cmd.exe</code>, <code>count 2</code>: the same spawn seen by both 4688 and Sysmon event 1.",
+D01_tl:"Someone types the wrong password for one account over and over, then gets it right. Ten or more failures on one account, then a success. On my test it was 27 failures, then a login.",
+D02_tl:"D01 turned around: one password tried against many accounts, which is how an attacker dodges a lockout. I sprayed 15 accounts from WS01 in a few seconds and it came back as one row.",
+D03_tl:"The moment an intruder stops being a guest and gives themselves the keys. It watches three events, not one, because local Administrators, Domain Admins and Enterprise Admins each log differently.",
+D04_tl:"A brand new local account is the classic quiet way back in, because it doesn't show up in Active Directory. On its own it's often innocent, so it's Medium. The dangerous version is what D03 pages for.",
+D05_tl:"Malware hides its payload behind base64 or a hidden window. My first version returned zero rows right after the attack: I was reading the wrong field. Twice.",
+D07_tl:"A scheduled task makes something run again after a reboot. I filter on who, not where: Windows makes its own tasks as the computer account, so a task a person hides in a Windows folder still gets caught.",
+D08_tl:"The last thing an intruder does is wipe the logs. Almost nothing legitimate clears a Security log, so it pages at Critical. You can't delete what already left the machine.",
+D09_tl:"You open an invoice, a macro fires, and Word quietly launches a command prompt. A normal document never does that. It reads Security 4688 and Sysmon event 1, so it still catches the spawn if one source misses it.",
+D10_tl:"The bridge to my WAF project. Many blocks from one source on one page, then a success on that same page: the shape of an attacker hammering a form until something gets through.",
+d06_h:"The one that didn't fire, and why that's the best result",
+d06_p1:"LSASS holds everyone's signed in credentials, and reading its memory is how tools like Mimikatz steal passwords. I asked Windows for the exact handle a dumper needs:",
+d06_l1:"Asked normally",d06_l2:"Asked elevated",d06_l3:"Elevated, with the debug privilege",d06_l4:"<code>RunAsPPL = 2</code>: LSASS is a protected process with a UEFI lock. The kernel refuses the handle before anything can log it.",
+denied:"Denied",why:"Why",
+d06_p2:"The detection is built and correct. On these hosts the operating system stops the attack upstream: a defense found, not a failure.",
+g_in:"Getting in",g_hold:"Taking hold",g_code:"Running code they shouldn't",g_keys:"After the keys",g_tracks:"Covering tracks",g_web:"The web shop",
+tl_l:"The ten detections, grouped by attack stage. Scroll sideways for more.",
+k_ten:"The ten detections",ten_h:"In the order an intruder trips them",
+ten_p:"Each detection is a saved SPL search that runs every minute over the last fifteen, mapped to a MITRE ATT&amp;CK technique. The serious ones page my phone. The quieter ones sit on the dashboard as context, so the pager stays meaningful.",
+k_pager:"The pager",pager_h:"Alerts are no use if I'm not staring at the screen",
+fl1:"Splunk alert",fl3:"private ntfy topic",fl4:"my phone",
+pager_p1:"So the serious ones come to my phone. A Splunk alert calls a small relay I wrote, which forwards it to a private ntfy topic that my phone is subscribed to. The topic name is a secret kept out of the repo, so nobody else can read my alerts.",
+pager_p2:"Only High and Critical page. Medium detections stay on the dashboard, because a pager that cries wolf gets ignored, and that is a real way a SOC fails.",
+pager_p3:"Why a relay and not Splunk straight to ntfy: the topic works like a password. With the relay it lives only in <code>.env</code>, which Git ignores, instead of in <code>savedsearches.conf</code>, which is in Git.",
+pager_note:"D01 and D05 are copied from my phone's screenshots. The D08 card is redrawn from its alert fields, because that screenshot was cropped.",
+k_find:"What I found",find_h:"The part I'd talk about in an interview",
+find_p:"The detections are the point, but the findings along the way are what I'd actually talk about.",
+f1_h:"No account lockout policy",f1_p:"The domain never locks an account after bad passwords, so guessing and spraying are cheap. Lucia took 27 wrong passwords and was never locked out; D01 and D02 are the only thing watching that door.",f1_from:"Found by D01 and D02",
+f2_h:"LSASS is protected, and it works",f2_p:"<code>RunAsPPL = 2</code> with a UEFI lock stops credential dumping before it starts. It happens so early that the attempt leaves no trace: a real defense beating a real technique, found by testing.",f2_from:"Found by D06",
+f3_h:"Central logging survives a wipe",f3_p:"Clearing WS02's Security log didn't touch what the SOC already held. Splunk kept every event sent before the wipe, plus the one event a clear always writes, saying who did it.",f3_from:"Found by D08",
+f4_h:"The fields weren't where I expected",f4_p:"The command line sat in <code>Process_Command_Line</code>, not <code>CommandLine</code>, and the script text in <code>Message</code>, not <code>ScriptBlockText</code>. Checking what the data actually looks like, before trusting a search, is now the first step of every detection I write.",f4_from:"Found by D05, and by D06's sensor gap",
+k_learn:"How I learned it",learn_h:"A driving instructor with dual controls",
+learn_p1:"I'm still learning, so I built this the way a lot of people learn now: with Claude Code, an AI coding assistant, as my tutor. It helped me script the lab, the domain build, the configs and the first drafts of the detections.",
+learn_p2:"I used it to learn the job, not to skip it: I ran Limonada S.L. on my own machines, ran every attack, debugged every detection that came back empty, and worked out the findings myself.",
+learn_p3:"Think of a driving instructor with dual controls. The instructor helped get the car on the road; I'm the one learning to drive it.",
+car_t:"A learner car seen from above, with two steering wheels and two sets of pedals",car_me:"me",car_tutor:"tutor",
+taught_h:"What this taught me",
+t1_h:"I can read Windows telemetry",t1_p:"I know what a 4625, a 4688, a 4104, a 4698 and a 1102 are telling me. And twice a detection came back empty because the data sat in a field I wasn't reading.",
+t2_h:"Attack, technique, detection",t2_p:"I can take an attack, map it to ATT&amp;CK and build a detection for it, so I can describe what it catches in the language a SOC team actually uses.",
+t3_h:"Firing is not the same as mattering",t3_p:"D06 is the clearest case: the search is correct, but the host's own protection stops the attack before it can be seen. Finding that was worth more than a green alert.",
+t4_h:"Tune for signal",t4_p:"Filter on who made a change rather than where, suppress repeats, keep the quiet detections off the pager so the loud ones still mean something.",
+t5_h:"The mindset",t5_p:"Notice the missing lockout policy, prove that central logging survives a wipe, write the gaps down instead of quietly papering over them.",
+closing:"This doesn't make me a finished analyst. It makes me someone who has done the work with their own hands and can talk through every piece of it, which is where I want to be starting from.",
+k_bridge:"One company, two projects",bridge_h:"The firewall blocks the attack, the SIEM notices the pattern",
+bridge_p:"WEB01 is WAF Flight Recorder, a web application firewall I deployed, attacked and tuned myself. Its log flows into this SOC, and D10 watches for many blocks from one source on one page, then a success on that same page.",
+br_t:"An attacker hammers a form on WEB01. The WAF blocks six tries and the seventh gets a 200. The WAF log reaches the SOC, D10 fires and the phone buzzes.",
+b_att:"attacker",b_waf:"WAF",b_wafsub:"WAF Flight Recorder",b_web:"WEB01 web shop",b_soc:"SOC in a Box",b_d10:"D10 fires",b_page:"phone buzzes",b_log:"WAF log",b_blocked:"blocked",b_through:"gets through",
+see_waf:"See the WAF project",waf_repo:"WAF Flight Recorder on GitHub",
+k_next:"What's next",next_h:"The road is already mapped",
+next_p:"The ten detections are the heart of this, and they're done. None of what follows changes the core, which is here and working today.",
+r1_h:"Ten detections",r1_p:"Built, tested against my own attacks, mapped to ATT&amp;CK and written up.",
+r2_h:"A compressed attack week",r2_p:"Five incidents fired fifteen minutes apart over ordinary background traffic, each one worked and written up as an incident report.",
+r3_h:"Wazuh as a second SIEM",r3_p:"Running the same week, so I can compare it with Splunk side by side.",
+r4_h:"A Microsoft Sentinel sprint",r4_p:"Port a few detections into a third query language.",
+done:"Done",planned:"Planned",
+lim_h:"Limits",
+lim_p:"This is a training lab for one analyst, not real security for a real company. It's a handful of virtual machines on one PC, not a hardened network, and the SOC is one person working by hand, not Splunk Enterprise Security or a 24/7 team. The worth of it is in the building and the understanding, not in the scale.",
+k_me:"About me",me_h:"I'm Albeen",
+me_p1:"I'm studying network systems administration and I want to start my career as a SOC analyst, the person in the chair who watches the alerts, decides which ones are real and runs down the ones that are. Before this I did a CyberSOC trainee program and guided Elastic and Kibana labs.",
+me_p2:"The trouble with guided labs is that someone else has already built the company, planted the attack and handed you the clean logs. You end up practising how to read the answer, not how to find it. So I built the whole thing myself.",
+me_p3:"The point was never to collect ten working searches. It was to understand the whole chain, from the command an attacker types, to the log line it leaves, to the alert on my phone, so I can explain any piece of it out loud.",
+profile:"My GitHub profile",this_repo:"This repository",more_h:"More projects",
+more_waf:"A web application firewall I deployed, attacked and tuned myself. It is WEB01, the web shop in this lab.",
+more_pp:"A tiny pixel world that lives on its own, until you decide it shouldn't.",
+visit:"Visit the page",
+foot:"Every name in this lab is made up. No real IP addresses or usernames appear on this page.",
+f_gh:"GitHub profile",f_repo:"SOC in a Box on GitHub"
+},
+es:{
+doc:"SOC in a Box: entré en mi propia empresa para ver si me pillaba",
+skip:"Saltar a la historia",theme_l:"Cambiar al tema claro",theme_d:"Cambiar al tema oscuro",lang:"Idioma",close:"Cerrar",
+map_t:"Mapa en vivo de Limonada S.L. y su SOC",
+map_d:"Un borde discontinuo encierra la red del laboratorio con DC01, WS01, WS02 y WEB01, y el atacante en su límite. Fuera están el SOC, Splunk en Docker, y un móvil. Pequeños puntos de log viajan de cada máquina al SOC. Cada pocos segundos se reproduce un ataque: una máquina parpadea, aparece el ID de su detección, una alerta corre hacia el SOC con el color de su gravedad y, en las detecciones High y Critical, el móvil vibra.",
+hook:"Monté una pequeña empresa en mi ordenador, puse un centro de operaciones de seguridad al lado y luego entré en mi propia empresa para ver si me pillaba.",
+read:"Lee la historia",replay:"Repite un ataque",gh:"Ver en GitHub",
+status:"Terminado. Diez detecciones: nueve saltan con un ataque real, siete hacen vibrar mi móvil.",
+lab_net:"Red del laboratorio de Limonada S.L.",att_lbl:"Atacante",soc_lbl:"El SOC",soc_sub:"Splunk en Docker",phone_lbl:"mi móvil",
+blocked_lbl:"Bloqueado antes: RunAsPPL = 2",nopage_lbl:"Medium: solo en el panel, sin aviso",
+live_paged:"{id} en {host}: {sev}, ha avisado a mi móvil.",live_quiet:"{id} en {host}: {sev}, en el panel, sin aviso.",live_blocked:"{id} en {host}: el sistema operativo lo bloqueó antes de cualquier log.",
+k_what:"Qué es",what_h:"Dos formas de contarlo",depth:"Elige el nivel",simple:"Sencillo",tech:"Técnico",
+simple_p:"Imagina una oficina pequeña con un servidor que comprueba todos los inicios de sesión, un par de portátiles del personal y una tienda web. Cada uno envía una nota a una sala de cámaras cada vez que pasa algo. Yo me siento en esa sala. Luego hago de ladrón, entro de varias formas distintas e intento pillarme a mí mismo como lo haría un analista SOC en un turno real.",
+tech_p:"En mi ordenador funcionan un controlador de dominio Windows Server, dos estaciones de trabajo Windows 11 y un servidor web con un WAF. Sus logs de Windows Security, Sysmon, PowerShell y ModSecurity salen de la red del laboratorio y viajan a Splunk Enterprise, que corre en Docker en el mismo ordenador pero fuera de la red de la empresa. Lanzo técnicas mapeadas a MITRE ATT&amp;CK contra el laboratorio, mis detecciones en SPL generan alertas que hacen vibrar mi móvil, y trabajo cada alerta como lo haría un analista junior.",
+k_co:"La empresa",co_h:"Limonada S.L.",
+co_p:"Una distribuidora de zumos inventada con 40 empleados. Es la misma empresa que lleva la tienda web que protegí en mi proyecto del WAF, así que los dos proyectos cuentan una sola historia.",
+co_note:"La empresa vive en una red privada de VMware y el SOC vive fuera, en Docker. Así funciona también un SOC gestionado en la vida real: está fuera de la red del cliente y los logs viajan hasta él.",
+c_dc_n:"DC01",c_dc_w:"Windows Server 2025, el controlador de dominio de <code>limonada.local</code>. Aquí se comprueba cada inicio de sesión de la empresa.",
+c_ws_n:"WS01, WS02",c_ws_w:"Estaciones de trabajo Windows 11 Enterprise del personal: el ordenador de Lucia Navarro en Finanzas y el de Carmen Vidal en Ventas.",
+c_web_n:"WEB01",c_web_w:"La tienda web detrás del WAF de mi proyecto anterior.",
+c_att_n:"Atacante",c_att_w:"El invitado que nadie invitó, apuntando solo a máquinas del laboratorio.",
+c_soc_n:"El SOC",c_soc_w:"Splunk y el relé de alertas en Docker, fuera de la red del laboratorio.",
+c_pager_n:"El buscapersonas",c_pager_w:"Las alertas llegan como notificaciones al móvil.",
+on_pc:"Vive en el ordenador",on_phone:"Vive en mi móvil",
+k_up:"Fase uno",up_h:"El SOC arranca",
+up_p:"Piensa en el SOC como un almacén que solo acepta entregas cuando tiene los muelles de carga adecuados. Primero necesitaba un sitio donde aterrizaran los logs.",
+step:"Paso",
+s1:"Splunk corre en Docker en mi ordenador, con cuatro cubos listos: uno para eventos de Windows, uno para Sysmon, uno para la tienda web y uno de reserva para Linux.",
+s2:"Los eventos de Windows en bruto son un muro de números, así que Splunk necesita dos pequeñas apps para entenderlos. Aquí están, instaladas.",
+s3:"Cuando las máquinas tuvieron sus forwarders, los eventos empezaron a llegar solos, del controlador de dominio y de las dos estaciones: unos 33.000 en la primera hora.",
+s4:"Esta es la pantalla que miro al sentarme: inicios de sesión fallidos, cambios de administradores, bloqueos del WAF, todo en un sitio.",
+alt01:"Los cuatro índices de Splunk",alt02:"Las apps de Windows y Sysmon instaladas",alt03:"Logs llegando desde las máquinas del laboratorio",alt04:"El panel del SOC",
+alt05:"D10 en Triggered Alerts",alt08:"Triggered Alerts con D01 arriba",alt11:"D02 saltando en Splunk",alt13:"D05 pillando las pruebas codificada y oculta",alt14:"Por qué falló la primera versión: el texto del script estaba en Message",
+open_shot:"Abrir la captura",
+k_chair:"La pieza central",chair_h:"Siéntate en la silla del analista",
+chair_p:"Estas son las alertas de mis propios ataques. Elige una y síguela desde lo que tecleé hasta la vibración de mi móvil.",
+queue:"Cola de alertas",queue_l:"Alertas, elige una para inspeccionarla",qreplay:"Repite el turno",qcount:"{n} de 10 en la cola",
+ch1:"Lo que hizo el atacante",ch2:"El log que dejó",ch3:"La búsqueda",ch4:"La alerta",ch5:"El aviso",
+copy:"Copiar",copied:"Copiado",writeup:"Ficha completa",no_alert:"sin alerta",
+res_lbl:"No hay captura de esta en Splunk. La fila que devolvió mi prueba:",
+pg_med:"Medium: sin aviso. Aparece en Triggered Alerts y en el panel, así el móvil solo vibra por cosas que merecen que me levante.",
+pg_d06:"Avisaría como Critical. No hubo nada que avisar: el sistema operativo paró el intento antes de que dejara rastro.",
+pg_d08:"Redibujado a partir de los campos de la alerta. Mi captura de este aviso salió recortada.",
+alert_at:"Alerta disparada a las {t} del 8 de octubre de 2026",
+ev4625:"inicio de sesión fallido",ev4624:"inicio de sesión correcto",ev4771:"fallo de Kerberos en DC01, estado <code>0x18</code> (contraseña incorrecta)",ev4728:"miembro añadido a un grupo global (Domain Admins)",ev4732:"miembro añadido a un grupo local (Administrators)",ev4756:"miembro añadido a un grupo universal (Enterprise Admins)",ev4720:"cuenta de usuario creada",ev4104:"texto del bloque de script de PowerShell, leído de <code>Message</code>",ev4688:"proceso creado, línea de comandos en <code>Process_Command_Line</code>",evs10:"acceso a proceso, destino <code>lsass.exe</code>",ev4698:"tarea programada creada",ev1102:"registro de seguridad borrado, y quién lo hizo",evs1:"proceso creado, con su proceso padre",evwaf:"bloqueos con estado 403 y luego un 2xx o 3xx en la misma página",
+sev_crit:"Critical",sev_high:"High",sev_med:"Medium",
+st_paged:"Salta y avisa",st_fires:"Salta",st_blocked:"Hecha, la frena una defensa",
+D01_n:"Muchos inicios de sesión fallidos y luego uno correcto",D01_s:"Fuerza bruta",
+D02_n:"Password spray desde un solo origen",D02_s:"Password spray",
+D03_n:"Añadido a un grupo privilegiado",D03_s:"Añadido a admins",
+D04_n:"Nueva cuenta local creada",D04_s:"Nueva cuenta local",
+D05_n:"PowerShell codificado u oculto",D05_s:"PowerShell oculto",
+D06_n:"Un proceso que abre la memoria de LSASS",D06_s:"Acceso a LSASS",
+D07_n:"Nueva tarea programada",D07_s:"Tarea programada",
+D08_n:"Registro de seguridad borrado",D08_s:"Registro borrado",
+D09_n:"Office abriendo una consola",D09_s:"Office abre consola",
+D10_n:"Bloqueos del WAF y luego un éxito",D10_s:"Bloqueos y luego 200",
+D01_did:"En la pantalla de inicio de WS01 escribí una y otra vez la contraseña equivocada de la cuenta de dominio <code>lucia.navarro</code>, y luego la buena. Nunca se bloqueó. DC01 y WS01 lo registraron, porque DC01 comprueba las contraseñas del dominio.",
+D02_did:"Desde WS01, como usuario normal, lancé un bucle de <code>net use</code> contra DC01: 15 nombres de usuario inventados, una sola contraseña, cada intento fallando a propósito. Son 15 inicios de sesión fallidos desde un origen en pocos segundos, muy por encima del umbral de 10.",
+D03_did:"En WS02, como el administrador local <code>labadmin</code>, creé una cuenta local y la añadí a Administrators.",
+D04_did:"En WS02, como <code>labadmin</code>, creé una cuenta local nueva llamada <code>helpdesk.temp</code>.",
+D05_did:"Tres comandos de PowerShell en WS01: uno con <code>-EncodedCommand</code>, otro con <code>-WindowStyle Hidden</code> y otro con <code>FromBase64String</code> en línea. Este es el de la ventana oculta, la alerta que llegó a mi móvil.",
+D06_did:"Una pequeña prueba en PowerShell que pide a Windows un acceso de lectura a LSASS con <code>0x1010</code>, justo el que necesita un volcador, sin leer ni un byte. Denegado. Con permisos elevados: denegado. Elevado y con el privilegio de depuración del que dependen los volcadores: denegado otra vez.",
+D07_did:"En WS02, como <code>labadmin</code>, creé una tarea programada que abre el Bloc de notas una vez.",
+D08_did:"En WS02, como <code>labadmin</code>, después de generar los eventos de prueba de D03, D04 y D07 y esperar un minuto, borré el registro de seguridad.",
+D09_did:"Office no está instalado en estas máquinas, así que probé la lógica con un sustituto: copié <code>cmd.exe</code> a un archivo llamado <code>winword.exe</code> e hice que abriera una consola.",
+D10_did:"Mandé seis inyecciones SQL a <code>/rest/products/search</code> en la tienda web y luego una búsqueda normal de <code>apple</code>.",
+D03_res:"Una fila nueva: <code>WS02</code>, <code>labadmin</code> a <code>Administrators</code>, SID del miembro acabado en <code>1002</code>, una cuenta local nueva.",
+D04_res:"Una fila: <code>WS02</code>, <code>labadmin</code> creó <code>helpdesk.temp</code>. La búsqueda en bruto daba 49 filas; con los filtros, 1.",
+D06_res:"Sin alerta. Los intentos denegados nunca generaron un evento 10 de Sysmon, así que el contador siguió en 0 después de cada intento. El registro de Windows explicaba por qué: <code>RunAsPPL = 2</code>.",
+D07_res:"Una fila: <code>WS02</code>, <code>labadmin</code>, <code>\\LimonadaUpdate</code>. Ninguna tarea de Windows, ninguna fila de OneDrive.",
+D08_res:"Una fila: <code>WS02</code>, <code>labadmin</code>. Splunk seguía teniendo todos los eventos que WS02 había enviado antes del borrado.",
+D09_res:"Una fila: <code>WS01</code>, <code>labadmin</code>, padre <code>c:\\users\\public\\d09test\\winword.exe</code>, hijo <code>c:\\windows\\system32\\cmd.exe</code>, <code>count 2</code>: el mismo proceso visto por 4688 y por el evento 1 de Sysmon.",
+D01_tl:"Alguien escribe una y otra vez la contraseña equivocada de una cuenta y al final acierta. Diez o más fallos en una cuenta y luego un acceso correcto. En mi prueba fueron 27 fallos y después un inicio de sesión.",
+D02_tl:"D01 al revés: una sola contraseña probada contra muchas cuentas, que es como un atacante esquiva el bloqueo. Probé 15 cuentas desde WS01 en pocos segundos y salió como una sola fila.",
+D03_tl:"El momento en que un intruso deja de ser un invitado y se da las llaves. Vigila tres eventos, no uno, porque Administrators local, Domain Admins y Enterprise Admins se registran de forma distinta.",
+D04_tl:"Una cuenta local nueva es la forma clásica y discreta de volver a entrar, porque no aparece en Active Directory. Por sí sola suele ser inocente, así que es Medium. La versión peligrosa es la que avisa D03.",
+D05_tl:"El malware esconde su carga detrás de base64 o de una ventana oculta. Mi primera versión devolvió cero filas justo después del ataque: estaba leyendo el campo equivocado. Dos veces.",
+D07_tl:"Una tarea programada hace que algo vuelva a ejecutarse tras un reinicio. Filtro por quién, no por dónde: Windows crea sus propias tareas con la cuenta del equipo, así que una tarea que una persona esconde en una carpeta de Windows sigue saliendo.",
+D08_tl:"Lo último que hace un intruso es borrar los logs. Casi nada legítimo borra un registro de seguridad, así que avisa como Critical. No puedes borrar lo que ya salió de la máquina.",
+D09_tl:"Abres una factura, salta una macro y Word abre en silencio una consola. Un documento normal nunca hace eso. Lee Security 4688 y el evento 1 de Sysmon, así que lo pilla aunque una de las dos fuentes falle.",
+D10_tl:"El puente con mi proyecto del WAF. Muchos bloqueos desde un origen en una página y luego un éxito en esa misma página: la forma de un atacante martilleando un formulario hasta que algo pasa.",
+d06_h:"La que no saltó, y por qué es el mejor resultado",
+d06_p1:"LSASS guarda las credenciales de todos los que han iniciado sesión, y leer su memoria es como herramientas tipo Mimikatz roban contraseñas. Pedí a Windows exactamente el acceso que necesita un volcador:",
+d06_l1:"Pedido de forma normal",d06_l2:"Pedido con permisos elevados",d06_l3:"Elevado y con el privilegio de depuración",d06_l4:"<code>RunAsPPL = 2</code>: LSASS es un proceso protegido con bloqueo UEFI. El núcleo rechaza el acceso antes de que nada pueda registrarlo.",
+denied:"Denegado",why:"Por qué",
+d06_p2:"La detección está hecha y es correcta. En estas máquinas el sistema operativo para el ataque antes: una defensa encontrada, no un fallo.",
+g_in:"Entrar",g_hold:"Hacerse fuerte",g_code:"Ejecutar lo que no deben",g_keys:"A por las llaves",g_tracks:"Borrar las huellas",g_web:"La tienda web",
+tl_l:"Las diez detecciones, agrupadas por fase del ataque. Desplázate a los lados para ver más.",
+k_ten:"Las diez detecciones",ten_h:"En el orden en que las pisa un intruso",
+ten_p:"Cada detección es una búsqueda SPL guardada que se ejecuta cada minuto sobre los últimos quince, mapeada a una técnica de MITRE ATT&amp;CK. Las serias avisan a mi móvil. Las más tranquilas se quedan en el panel como contexto, para que el aviso siga significando algo.",
+k_pager:"El buscapersonas",pager_h:"Las alertas no sirven si no estoy mirando la pantalla",
+fl1:"alerta de Splunk",fl3:"tema privado de ntfy",fl4:"mi móvil",
+pager_p1:"Así que las serias llegan a mi móvil. Una alerta de Splunk llama a un pequeño relé que escribí, que la reenvía a un tema privado de ntfy al que está suscrito mi móvil. El nombre del tema es un secreto que no está en el repositorio, para que nadie más pueda leer mis alertas.",
+pager_p2:"Solo avisan High y Critical. Las Medium se quedan en el panel, porque a un aviso que grita que viene el lobo se le acaba ignorando, y esa es una forma real de fallar de un SOC.",
+pager_p3:"Por qué un relé y no Splunk directo a ntfy: el tema funciona como una contraseña. Con el relé vive solo en <code>.env</code>, que Git ignora, en vez de en <code>savedsearches.conf</code>, que está en Git.",
+pager_note:"D01 y D05 están copiados de las capturas de mi móvil. La tarjeta de D08 está redibujada a partir de los campos de su alerta, porque esa captura salió recortada.",
+k_find:"Lo que encontré",find_h:"La parte de la que hablaría en una entrevista",
+find_p:"Las detecciones son el objetivo, pero los hallazgos por el camino son de lo que de verdad hablaría.",
+f1_h:"No hay política de bloqueo de cuentas",f1_p:"El dominio nunca bloquea una cuenta tras contraseñas erróneas, así que adivinar y hacer password spray sale barato. Lucia aguantó 27 contraseñas equivocadas sin bloquearse; D01 y D02 son lo único que vigila esa puerta.",f1_from:"Lo encontraron D01 y D02",
+f2_h:"LSASS está protegido, y funciona",f2_p:"<code>RunAsPPL = 2</code> con bloqueo UEFI para el volcado de credenciales antes de que empiece. Ocurre tan pronto que el intento no deja rastro: una defensa real ganando a una técnica real, encontrada probando.",f2_from:"Lo encontró D06",
+f3_h:"El log central sobrevive a un borrado",f3_p:"Borrar el registro de seguridad de WS02 no tocó lo que el SOC ya tenía. Splunk guardó todos los eventos enviados antes del borrado, más el evento que un borrado siempre escribe, diciendo quién lo hizo.",f3_from:"Lo encontró D08",
+f4_h:"Los campos no estaban donde esperaba",f4_p:"La línea de comandos estaba en <code>Process_Command_Line</code>, no en <code>CommandLine</code>, y el texto del script en <code>Message</code>, no en <code>ScriptBlockText</code>. Comprobar cómo son de verdad los datos antes de fiarme de una búsqueda es ahora el primer paso de cada detección que escribo.",f4_from:"Lo encontró D05, y el punto ciego del sensor en D06",
+k_learn:"Cómo lo aprendí",learn_h:"Un profesor de autoescuela con doble mando",
+learn_p1:"Sigo aprendiendo, así que lo monté como aprende mucha gente hoy: con Claude Code, un asistente de programación con IA, como tutor. Me ayudó a escribir los scripts del laboratorio, la creación del dominio, las configuraciones y los primeros borradores de las detecciones.",
+learn_p2:"Lo usé para aprender el trabajo, no para saltármelo: hice funcionar Limonada S.L. en mis propias máquinas, lancé cada ataque, depuré cada detección que volvía vacía y saqué los hallazgos yo mismo.",
+learn_p3:"Piensa en un profesor de autoescuela con doble mando. El profesor ayudó a sacar el coche a la carretera; yo soy el que está aprendiendo a conducirlo.",
+car_t:"Un coche de autoescuela visto desde arriba, con dos volantes y dos juegos de pedales",car_me:"yo",car_tutor:"tutor",
+taught_h:"Lo que me enseñó",
+t1_h:"Sé leer la telemetría de Windows",t1_p:"Sé lo que me dicen un 4625, un 4688, un 4104, un 4698 y un 1102. Y dos veces una detección volvió vacía porque los datos estaban en un campo que no leía.",
+t2_h:"Ataque, técnica, detección",t2_p:"Sé coger un ataque, mapearlo a ATT&amp;CK y construir una detección, así que puedo describir lo que pilla en el idioma que usa de verdad un equipo SOC.",
+t3_h:"Saltar no es lo mismo que importar",t3_p:"D06 es el caso más claro: la búsqueda es correcta, pero la propia protección de la máquina para el ataque antes de que se vea. Encontrar eso valió más que una alerta en verde.",
+t4_h:"Afinar para la señal",t4_p:"Filtrar por quién hizo un cambio y no por dónde, suprimir repeticiones, dejar las detecciones tranquilas fuera del aviso para que las ruidosas sigan significando algo.",
+t5_h:"La mentalidad",t5_p:"Fijarme en la política de bloqueo que faltaba, demostrar que el log central sobrevive a un borrado, apuntar los huecos en vez de taparlos en silencio.",
+closing:"Esto no me convierte en un analista terminado. Me convierte en alguien que ha hecho el trabajo con sus propias manos y puede explicar cada pieza, que es desde donde quiero empezar.",
+k_bridge:"Una empresa, dos proyectos",bridge_h:"El firewall bloquea el ataque, el SIEM ve el patrón",
+bridge_p:"WEB01 es WAF Flight Recorder, un firewall de aplicaciones web que desplegué, ataqué y afiné yo mismo. Su log llega a este SOC, y D10 vigila muchos bloqueos desde un origen en una página y luego un éxito en esa misma página.",
+br_t:"Un atacante martillea un formulario en WEB01. El WAF bloquea seis intentos y el séptimo recibe un 200. El log del WAF llega al SOC, D10 salta y el móvil vibra.",
+b_att:"atacante",b_waf:"WAF",b_wafsub:"WAF Flight Recorder",b_web:"tienda web WEB01",b_soc:"SOC in a Box",b_d10:"D10 salta",b_page:"el móvil vibra",b_log:"log del WAF",b_blocked:"bloqueado",b_through:"pasa",
+see_waf:"Ver el proyecto del WAF",waf_repo:"WAF Flight Recorder en GitHub",
+k_next:"Lo siguiente",next_h:"El camino ya está trazado",
+next_p:"Las diez detecciones son el corazón de esto, y están hechas. Nada de lo que viene cambia el núcleo, que está aquí y funciona hoy.",
+r1_h:"Diez detecciones",r1_p:"Construidas, probadas contra mis propios ataques, mapeadas a ATT&amp;CK y documentadas.",
+r2_h:"Una semana de ataques comprimida",r2_p:"Cinco incidentes lanzados con quince minutos de separación sobre tráfico normal de fondo, cada uno trabajado y documentado como informe de incidente.",
+r3_h:"Wazuh como segundo SIEM",r3_p:"Funcionando la misma semana, para compararlo con Splunk lado a lado.",
+r4_h:"Un sprint con Microsoft Sentinel",r4_p:"Pasar unas cuantas detecciones a un tercer lenguaje de consulta.",
+done:"Hecho",planned:"Previsto",
+lim_h:"Límites",
+lim_p:"Esto es un laboratorio de formación para un analista, no seguridad real para una empresa real. Son unas cuantas máquinas virtuales en un ordenador, no una red reforzada, y el SOC es una persona trabajando a mano, no Splunk Enterprise Security ni un equipo 24/7. Su valor está en construirlo y entenderlo, no en la escala.",
+k_me:"Sobre mí",me_h:"Soy Albeen",
+me_p1:"Estudio administración de sistemas en red y quiero empezar mi carrera como analista SOC, la persona en la silla que vigila las alertas, decide cuáles son reales y persigue las que lo son. Antes de esto hice un programa de formación CyberSOC y laboratorios guiados de Elastic y Kibana.",
+me_p2:"El problema de los laboratorios guiados es que otra persona ya ha montado la empresa, ha plantado el ataque y te da los logs limpios. Acabas practicando cómo leer la respuesta, no cómo encontrarla. Así que lo monté todo yo.",
+me_p3:"La idea nunca fue coleccionar diez búsquedas que funcionan. Era entender la cadena entera, desde el comando que teclea un atacante, al log que deja, a la alerta en mi móvil, para poder explicar cualquier pieza en voz alta.",
+profile:"Mi perfil de GitHub",this_repo:"Este repositorio",more_h:"Más proyectos",
+more_waf:"Un firewall de aplicaciones web que desplegué, ataqué y afiné yo mismo. Es WEB01, la tienda web de este laboratorio.",
+more_pp:"Un pequeño mundo pixelado que vive por su cuenta, hasta que decides que no debería.",
+visit:"Visitar la página",
+foot:"Todos los nombres de este laboratorio son inventados. En esta página no aparecen direcciones IP ni nombres de usuario reales.",
+f_gh:"Perfil de GitHub",f_repo:"SOC in a Box en GitHub"
+}};
+/*APP*/
+</script>
+</body>
+</html>
