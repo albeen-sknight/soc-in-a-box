@@ -1,3 +1,4 @@
+**English** · [Español](README.es.md)
 # SOC in a Box
 
 I built a tiny company on my PC, put a security operations center next to it, and then broke into my own company to see if I'd catch myself.
