@@ -58,6 +58,9 @@ Limonada S.L. es un distribuidor de zumos inventado con 40 empleados. Es la mism
 
 La empresa vive en una red privada de VMware y el SOC vive fuera de ella, en Docker. Así es también como funciona un SOC gestionado en la vida real: está fuera de la red del cliente y los logs viajan hasta él.
 
+Nota de arquitectura física: Aunque la idea inicial contemplaba distribuir el entorno ejecutando el SOC en mi portátil y la infraestructura de Limonada S.L. en mi PC principal, opté por consolidar todo el laboratorio dentro de un único hardware host (mi PC) por disponibilidad técnica. Esto demuestra que la separación lógica (red virtualizada aislada vs. entornos de contenedores independientes) es plenamente funcional y recrea el mismo escenario de aislamiento de red sin necesidad de hardware dedicado adicional.
+
+
 ## El SOC se pone en marcha
 
 Piensa en el SOC como un almacén que solo acepta entregas cuando tiene los muelles de carga listos. Lo primero que necesitaba era un sitio donde aterrizaran los logs. Splunk corre en Docker en mi PC, con cuatro cajones preparados: uno para eventos de Windows, uno para Sysmon, uno para la tienda web y uno de reserva para Linux.
