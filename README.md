@@ -55,6 +55,10 @@ Limonada S.L. is a made up juice distributor with 40 staff. It's the same compan
 | The pager | Alerts arrive as phone notifications | Phone |
 
 The company lives on a private VMware network and the SOC lives outside it, in Docker. That's how a managed SOC works in real life too: it sits outside the client's network and the logs travel to it.
+> [!NOTE]
+> Originally I planned to split the physical hardware by running the Splunk SOC on my laptop and hosting the corporate network on my desktop PC. Because of hardware availability I ended up consolidating both environments onto my main PC.
+> 
+> The technical design remains exactly the same. By using VMware private networks alongside isolated Docker environments on a single machine I successfully simulated a fully remote CyberSOC without needing a server rack.
 
 ## The SOC comes up
 
