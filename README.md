@@ -6,18 +6,18 @@
 
 # 🧳 SOC in a Box
 
-### *A tiny home-lab network coupled with an external Security Operations Center to test active detection engineering.*
+### *A tiny home lab network coupled with an external Security Operations Center to test active detection engineering*
 
-🔗 **[Live Showcase](https://albeen-sknight.github.io/soc-in-a-box/)**
+🔗 **[Live Showcase](https://github.io)**
 
 ---
 
 </div>
 
-I built a tiny company on my PC, put a security operations center next to it, and then broke into my own company to see if I'd catch myself.
+I built a tiny company on my PC, put a security operations center next to it, and then broke into my own company to see if I would catch myself.
 
 > 🟩 **Status: Finished**
-> The company and the SOC are completely built and running. All **ten detections** are actively firing on live attack scenarios and paging my phone, except for the tenth, which ran into a system defense that successfully blocks the threat upstream before it even generates telemetry—a win in its own right. 
+> The company and the SOC are completely built and running. All **ten detections** are actively firing on live attack scenarios and paging my phone, except for the tenth, which ran into a system defense that successfully blocks the threat upstream before it even generates telemetry. This is a win in its own right.
 
 This page covers the entire story from architecture setup to attack execution and detection logic.
 
