@@ -1,5 +1,8 @@
-**English** · [Español](README.es.md)
-# SOC in a Box
+<p align="center">
+  <strong>English</strong> · <a href="README.es.md">Español</a>
+</p>
+
+<h1 align="center">SOC in a Box</h1>
 
 I built a tiny company on my PC, put a security operations center next to it, and then broke into my own company to see if I'd catch myself.
 
