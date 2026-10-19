@@ -1,17 +1,33 @@
-[English](README.md) · **Español**
-# SOC in a Box
+<p align="center">
+  <a href="README.md">English</a> · <strong>Español</strong>
+</p>
+
+<div align="center">
+
+# 🧳 SOC in a Box
+
+### *Un entorno de red corporativa a pequeña escala conectado a un Centro de Operaciones de Seguridad externo para probar ingeniería de detección activa*
+
+🔗 **[Demo en vivo](https://albeen-sknight.github.io/soc-in-a-box/)**
+
+---
+
+</div>
 
 Monté una pequeña empresa en mi PC, le puse al lado un centro de operaciones de seguridad (SOC) y luego entré a robar en mi propia empresa para ver si me pillaba a mí mismo.
 
-**Demo en vivo:** https://albeen-sknight.github.io/soc-in-a-box/
+> 🟩 **Estado: Terminado**
+> La empresa y el SOC están totalmente montados y funcionando. Las **diez detecciones** están hechas. Nueve saltan con un ataque real en vivo y me avisan al móvil. La décima se topó con una defensa del sistema que corta la amenaza por completo antes de que genere telemetría, lo cual representa una victoria por derecho propio.
 
-> **Estado:** terminado. La empresa y el SOC están montados y funcionando, y las diez detecciones están hechas. Nueve saltan con un ataque real y me avisan al móvil; la décima se topó con una defensa que corta el ataque antes incluso de que empiece, que también es una victoria. Esta página es la historia entera, de principio a fin.
+Esta página cubre la historia entera desde la configuración de la arquitectura hasta la ejecución de ataques y la lógica de las búsquedas.
 
 ## Qué es esto
 
-**En palabras sencillas:** imagina una oficina pequeña con un servidor que comprueba los inicios de sesión de todo el mundo, un par de portátiles del personal y una tienda web. Cada uno de ellos manda un aviso a una sala de cámaras cada vez que pasa algo. Yo estoy en la sala de cámaras. Luego hago de ladrón, entro de varias maneras distintas e intento pillarme a mí mismo como lo haría un analista SOC en un turno de verdad.
+### En palabras sencillas
+Imagina una oficina pequeña con un servidor que comprueba los inicios de sesión de todo el mundo, un par de portátiles del personal y una tienda web. Cada uno de ellos manda un aviso a una sala de cámaras cada vez que pasa algo. Yo estoy en la sala de cámaras. Luego hago de ladrón, entro de varias maneras distintas e intento pillarme a mí mismo como lo haría un analista SOC en un turno de verdad.
 
-**En palabras técnicas:** un controlador de dominio con Windows Server, dos estaciones de trabajo con Windows 11 y un servidor web con un WAF, todo corriendo en mi PC. Sus registros de Windows Security, Sysmon, PowerShell y ModSecurity salen de la red del laboratorio y viajan hasta Splunk Enterprise, que corre en Docker en el mismo PC pero fuera de la red de la empresa. Lanzo técnicas mapeadas a MITRE ATT&CK contra el laboratorio, mis detecciones en SPL levantan alertas que me hacen vibrar el móvil, y trabajo cada alerta como lo haría un analista junior.
+### En palabras técnicas
+Un controlador de dominio con Windows Server, dos estaciones de trabajo con Windows 11 y un servidor web con un WAF, todo corriendo en mi PC. Sus registros de Windows Security, Sysmon, PowerShell y ModSecurity salen de la red del laboratorio y viajan hasta Splunk Enterprise, que corre en Docker en el mismo PC pero fuera de la red de la empresa. Lanzo técnicas mapeadas a MITRE ATT&CK contra el laboratorio, mis detecciones en SPL levantan alertas que me hacen vibrar el móvil, y trabajo cada alerta como lo haría un analista junior.
 
 ## Sobre mí
 
